@@ -1,2205 +1,675 @@
-/* Set the font family and size for the entire page */
-body {
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
+/* Modern CSS Variables for Theme System */
+:root {
+    --font-primary: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    --font-size-base: 14px;
+    --font-size-small: 12px;
+    --font-size-large: 16px;
+    --line-height: 1.6;
+    --border-radius: 8px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 40px;
 }
 
-/* Style the main content area */
+/* Base styles with improved readability */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height);
+    background-color: white;
+    color: #2c3e50;
+    transition: var(--transition);
+}
+
+/* Base Layout Styles */
 main {
-    margin: 20px;
+    margin: var(--spacing-md);
+    padding: var(--spacing-md);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 #menu-button {
     position: absolute;
-    top: 9px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-small);
+    background: var(--bg-secondary, #f8f9fa);
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#menu-button:hover {
+    background: var(--bg-hover, #e9ecef);
+    transform: translateY(-1px);
 }
 
 #menu {
     position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
+    top: var(--spacing-lg);
+    right: var(--spacing-sm);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-small);
+    background: var(--bg-secondary, #f8f9fa);
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+    box-shadow: var(--shadow);
 }
 
 .icon-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-md);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: var(--spacing-md) 0;
 }
 
 h1 a {
-    color: black;
+    color: var(--text-primary, #2c3e50);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+h1 a:hover {
+    color: var(--accent-color, #3498db);
 }
 
 h5 {
     font-style: italic;
-    color: purple;
+    color: var(--text-muted, #6c757d);
+    font-weight: 400;
+    margin: var(--spacing-sm) 0;
 }
 
-/* Add topnav colors */
 .topnav {
-    color: #333;
+    color: var(--text-primary, #2c3e50);
     top: 0;
     width: 100%;
+    padding: var(--spacing-sm) 0;
 }
 
 hr {
     border: none;
-    border-top: 1px solid #ccc;
-    margin: 20px 0;
+    border-top: 2px solid var(--border-color, #dee2e6);
+    margin: var(--spacing-md) auto;
     width: 65%;
+    max-width: 400px;
 }
 
-/* Style the links */
+/* Enhanced Link Styles */
 a {
-    color: #007bff;
+    color: var(--link-color, #007bff);
     text-decoration: none;
+    transition: var(--transition);
 }
 
 a:hover {
+    color: var(--link-hover, #0056b3);
     text-decoration: underline;
 }
 
-/* Style the News Feed */
-#news-feed {
-    margin: 50px auto;
-    width: 65%;
+a:focus {
+    outline: 2px solid var(--accent-color, #3498db);
+    outline-offset: 2px;
 }
-  
+
+/* Enhanced News Feed */
+#news-feed {
+    margin: var(--spacing-lg) auto;
+    width: min(65%, 800px);
+    padding: var(--spacing-md);
+    background: var(--bg-card, #ffffff);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
 #news-feed h4 {
-    margin: 10px 0;
-    font-size: 14px;
+    margin: var(--spacing-md) 0 var(--spacing-sm);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 #news-feed h4 a {
-    color: #007bff;
-    text-decoration: none;
+    color: var(--text-primary, #2c3e50);
+    font-weight: 600;
 }
 
 #news-feed h4 a:hover {
-    color: purple;
+    color: var(--accent-color, #3498db);
 }
 
 #news-feed h4 a:visited {
-    color: purple;
+    color: var(--text-visited, #6f42c1);
 }
-  
+
 #news-feed p {
-    margin: 5px 0;
-    font-size: 13px;
-    color: #666;
+    margin: var(--spacing-xs) 0 var(--spacing-md);
+    font-size: var(--font-size-small);
+    color: var(--text-secondary, #6c757d);
+    line-height: var(--line-height);
 }
-  
+
 #news-feed hr {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 12px 0;
-    width: 20%;
+    border-top: 1px solid var(--border-light, #e9ecef);
+    margin: var(--spacing-md) 0;
+    width: 30%;
 }
 
-/* Set the font family and size for the entire page */
-body.white-theme {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: white;
-    color: black;
+/* ============ MODERN ACCESSIBLE THEMES ============ */
+
+/* Default Light Theme */
+body.white-theme, body {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-hover: #e9ecef;
+    --text-primary: #2c3e50;
+    --text-secondary: #6c757d;
+    --text-muted: #95a5a6;
+    --text-visited: #6f42c1;
+    --link-color: #007bff;
+    --link-hover: #0056b3;
+    --accent-color: #3498db;
+    --border-color: #dee2e6;
+    --border-light: #e9ecef;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the main content area */
-body.white-theme main {
-    margin: 20px;
+/* Dark Theme */
+body.dark-theme {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-card: #222222;
+    --bg-hover: #3a3a3a;
+    --text-primary: #e8e6e3;
+    --text-secondary: #b0b0b0;
+    --text-muted: #8a8a8a;
+    --text-visited: #bb86fc;
+    --link-color: #64b5f6;
+    --link-hover: #42a5f5;
+    --accent-color: #03dac6;
+    --border-color: #404040;
+    --border-light: #333333;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme #menu-button {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
+/* Professional Blue Theme */
+body.Blue, body.blue-theme {
+    --bg-primary: #f0f4f8;
+    --bg-secondary: #e2e8f0;
+    --bg-card: #ffffff;
+    --bg-hover: #cbd5e0;
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-visited: #553c9a;
+    --link-color: #2b6cb0;
+    --link-hover: #2c5282;
+    --accent-color: #3182ce;
+    --border-color: #cbd5e0;
+    --border-light: #e2e8f0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme #menu {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
+/* Modern Green Theme */
+body.Green, body.green-theme {
+    --bg-primary: #f0fdf4;
+    --bg-secondary: #dcfce7;
+    --bg-card: #ffffff;
+    --bg-hover: #bbf7d0;
+    --text-primary: #14532d;
+    --text-secondary: #166534;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #059669;
+    --link-hover: #047857;
+    --accent-color: #10b981;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme .icon-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+/* Warm Orange Theme */
+body.Orange, body.orange-theme {
+    --bg-primary: #fffbeb;
+    --bg-secondary: #fef3c7;
+    --bg-card: #ffffff;
+    --bg-hover: #fed7aa;
+    --text-primary: #9a3412;
+    --text-secondary: #c2410c;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #ea580c;
+    --link-hover: #dc2626;
+    --accent-color: #f97316;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme h1 a {
-    color: black;
+/* Elegant Purple Theme */
+body.Purple, body.purple-theme {
+    --bg-primary: #faf7ff;
+    --bg-secondary: #f3e8ff;
+    --bg-card: #ffffff;
+    --bg-hover: #e9d5ff;
+    --text-primary: #581c87;
+    --text-secondary: #7c3aed;
+    --text-muted: #6b7280;
+    --text-visited: #be185d;
+    --link-color: #8b5cf6;
+    --link-hover: #7c3aed;
+    --accent-color: #a855f7;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme h5 {
-    font-style: italic;
-    color: purple;
+/* Sophisticated Red Theme */
+body.Red, body.red-theme {
+    --bg-primary: #fef2f2;
+    --bg-secondary: #fecaca;
+    --bg-card: #ffffff;
+    --bg-hover: #fca5a5;
+    --text-primary: #7f1d1d;
+    --text-secondary: #991b1b;
+    --text-muted: #6b7280;
+    --text-visited: #581c87;
+    --link-color: #dc2626;
+    --link-hover: #b91c1c;
+    --accent-color: #ef4444;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Add topnav colors */
-body.white-theme .topnav {
-    color: #333;
-    top: 0;
-    width: 100%;
+/* Modern Gray Theme */
+body.Gray, body.gray-theme {
+    --bg-primary: #f9fafb;
+    --bg-secondary: #f3f4f6;
+    --bg-card: #ffffff;
+    --bg-hover: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+    --text-visited: #6366f1;
+    --link-color: #4f46e5;
+    --link-hover: #4338ca;
+    --accent-color: #6366f1;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme hr {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 20px 0;
-    width: 65%;
+/* Vibrant Yellow Theme */
+body.Yellow, body.yellow-theme {
+    --bg-primary: #fffbeb;
+    --bg-secondary: #fef3c7;
+    --bg-card: #ffffff;
+    --bg-hover: #fed7aa;
+    --text-primary: #78350f;
+    --text-secondary: #92400e;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #d97706;
+    --link-hover: #b45309;
+    --accent-color: #f59e0b;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the links */
-body.white-theme a {
-    color: #007bff;
-    text-decoration: none;
+/* Ocean Cyan Theme */
+body.Cyan, body.cyan-theme {
+    --bg-primary: #ecfeff;
+    --bg-secondary: #cffafe;
+    --bg-card: #ffffff;
+    --bg-hover: #a5f3fc;
+    --text-primary: #164e63;
+    --text-secondary: #0891b2;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #0891b2;
+    --link-hover: #0e7490;
+    --accent-color: #06b6d4;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-body.white-theme a:hover {
-    text-decoration: underline;
+/* Elegant Pink Theme */
+body.Pink, body.pink-theme {
+    --bg-primary: #fdf2f8;
+    --bg-secondary: #fce7f3;
+    --bg-card: #ffffff;
+    --bg-hover: #f9a8d4;
+    --text-primary: #831843;
+    --text-secondary: #be185d;
+    --text-muted: #6b7280;
+    --text-visited: #581c87;
+    --link-color: #ec4899;
+    --link-hover: #db2777;
+    --accent-color: #f472b6;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the News Feed */
-body.white-theme #news-feed {
-    margin: 50px auto;
-    width: 65%;
-}
-  
-body.white-theme #news-feed h4 {
-    margin: 10px 0;
-    font-size: 12px;
-}
-
-body.white-theme #news-feed h4 a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-body.white-theme #news-feed h4 a:hover {
-    color: purple;
-}
-
-body.white-theme #news-feed h4 a:visited {
-    color: purple;
-}
-  
-body.white-theme #news-feed p {
-    margin: 5px 0;
-    font-size: 12px;
-    color: #666;
-}
-  
-body.white-theme #news-feed hr {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 10px 0;
-    width: 20%;
+/* Additional accessible themes for backward compatibility */
+body.Brown, body.brown-theme {
+    --bg-primary: #fefcbf;
+    --bg-secondary: #f7fafc;
+    --bg-card: #ffffff;
+    --bg-hover: #edf2f7;
+    --text-primary: #744210;
+    --text-secondary: #975a16;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #c05621;
+    --link-hover: #9c4221;
+    --accent-color: #dd6b20;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the header */
-body.white-theme header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
+body.Silver, body.silver-theme {
+    --bg-primary: #f7fafc;
+    --bg-secondary: #edf2f7;
+    --bg-card: #ffffff;
+    --bg-hover: #e2e8f0;
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-visited: #553c9a;
+    --link-color: #4299e1;
+    --link-hover: #3182ce;
+    --accent-color: #63b3ed;
+    --border-color: #cbd5e0;
+    --border-light: #e2e8f0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Set the font family and size for the entire page */
-body.Orange {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FDE5B1;
-    color: black;
+body.Gold, body.gold-theme {
+    --bg-primary: #fffbeb;
+    --bg-secondary: #fef5e7;
+    --bg-card: #ffffff;
+    --bg-hover: #fed7aa;
+    --text-primary: #78350f;
+    --text-secondary: #92400e;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #d97706;
+    --link-hover: #b45309;
+    --accent-color: #f59e0b;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the header */
-header.Orange {
-    background-color: #FFA500;
-    color: #fff;
-    padding: 20px;
+body.Maroon, body.maroon-theme {
+    --bg-primary: #fef2f2;
+    --bg-secondary: #fee2e2;
+    --bg-card: #ffffff;
+    --bg-hover: #fecaca;
+    --text-primary: #7f1d1d;
+    --text-secondary: #991b1b;
+    --text-muted: #6b7280;
+    --text-visited: #581c87;
+    --link-color: #dc2626;
+    --link-hover: #b91c1c;
+    --accent-color: #ef4444;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the main content area */
-main.Orange {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FFA500;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+body.Navy, body.navy-theme {
+    --bg-primary: #f0f4f8;
+    --bg-secondary: #e2e8f0;
+    --bg-card: #ffffff;
+    --bg-hover: #cbd5e0;
+    --text-primary: #1a202c;
+    --text-secondary: #2d3748;
+    --text-muted: #4a5568;
+    --text-visited: #553c9a;
+    --link-color: #2b6cb0;
+    --link-hover: #2c5282;
+    --accent-color: #3182ce;
+    --border-color: #cbd5e0;
+    --border-light: #e2e8f0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the links */
-a.Orange {
-    color: #FF4500;
-    text-decoration: none;
+body.Olive, body.olive-theme {
+    --bg-primary: #f7fafc;
+    --bg-secondary: #edf2f7;
+    --bg-card: #ffffff;
+    --bg-hover: #e2e8f0;
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-visited: #553c9a;
+    --link-color: #38a169;
+    --link-hover: #2f855a;
+    --accent-color: #48bb78;
+    --border-color: #cbd5e0;
+    --border-light: #e2e8f0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-a.Orange:hover {
-    text-decoration: underline;
+body.Aqua, body.aqua-theme {
+    --bg-primary: #ecfeff;
+    --bg-secondary: #cffafe;
+    --bg-card: #ffffff;
+    --bg-hover: #a5f3fc;
+    --text-primary: #164e63;
+    --text-secondary: #0891b2;
+    --text-muted: #6b7280;
+    --text-visited: #7c2d12;
+    --link-color: #0891b2;
+    --link-hover: #0e7490;
+    --accent-color: #06b6d4;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Style the News Feed */
-#news-feed.Orange {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FFA500;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+body.Tomato, body.tomato-theme {
+    --bg-primary: #fef2f2;
+    --bg-secondary: #fee2e2;
+    --bg-card: #ffffff;
+    --bg-hover: #fecaca;
+    --text-primary: #7f1d1d;
+    --text-secondary: #991b1b;
+    --text-muted: #6b7280;
+    --text-visited: #581c87;
+    --link-color: #dc2626;
+    --link-hover: #b91c1c;
+    --accent-color: #ef4444;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-#news-feed.Orange h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FF4500;
+body.Coral, body.coral-theme {
+    --bg-primary: #fef2f2;
+    --bg-secondary: #fee2e2;
+    --bg-card: #ffffff;
+    --bg-hover: #fecaca;
+    --text-primary: #7f1d1d;
+    --text-secondary: #991b1b;
+    --text-muted: #6b7280;
+    --text-visited: #581c87;
+    --link-color: #f56565;
+    --link-hover: #e53e3e;
+    --accent-color: #fc8181;
+    --border-color: #d1d5db;
+    --border-light: #e5e7eb;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-#news-feed.Orange h4 a {
-    color: #FF4500;
-    text-decoration: none;
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        margin: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+    
+    #news-feed {
+        width: 95%;
+        margin: var(--spacing-md) auto;
+        padding: var(--spacing-sm);
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
 }
 
-#news-feed.Orange h4 a:hover {
-    color: #FF6347;
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
-#news-feed.Orange h4 a:visited {
-    color: #FF6347;
+/* Enhanced Typography */
+h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
 }
 
-#news-feed.Orange p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8B4513;
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+p {
+    margin-bottom: var(--spacing-sm);
+    line-height: var(--line-height);
 }
 
-#news-feed.Orange hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Orange {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF4500;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
+/* Enhanced Interactive Elements */
+button, .button {
+    font-family: var(--font-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     cursor: pointer;
+    transition: var(--transition);
+    font-size: var(--font-size-small);
 }
 
-#menu-button.Orange:hover {
-    background-color: #FF6347;
+button:hover, .button:hover {
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
 }
 
-/* Style the menu */
-#menu.Orange {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FFA500;
-    border: 1px solid #FF4500;
+button:focus, .button:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+
+/* Enhanced Code and Monospace Text */
+code, pre, .monospace {
+    font-family: var(--font-primary);
+    background: var(--bg-secondary);
+    padding: 2px 4px;
     border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Blue {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #B0C4DE;
-    color: black;
-}
-
-/* Style the header */
-header.Blue {
-    background-color: #4169E1;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Blue {
-    margin: 20px;
-    padding: 20px;
-    background-color: #4169E1;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Blue {
-    color: #1E90FF;
-    text-decoration: none;
-}
-
-a.Blue:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Blue {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #4169E1;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Blue h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #1E90FF;
-}
-
-#news-feed.Blue h4 a {
-    color: #1E90FF;
-    text-decoration: none;
-}
-
-#news-feed.Blue h4 a:hover {
-    color: #6495ED;
-}
-
-#news-feed.Blue h4 a:visited {
-    color: #6495ED;
-}
-
-#news-feed.Blue p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #4682B4;
-}
-
-#news-feed.Blue hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Blue {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #1E90FF;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Blue:hover {
-    background-color: #6495ED;
-}
-
-/* Style the menu */
-#menu.Blue {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #4169E1;
-    border: 1px solid #1E90FF;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Brown {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #D2B48C;
-    color: black;
-}
-
-/* Style the header */
-header.Brown {
-    background-color: #8B4513;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Brown {
-    margin: 20px;
-    padding: 20px;
-    background-color: #8B4513;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Brown {
-    color: #A0522D;
-    text-decoration: none;
-}
-
-a.Brown:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Brown {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #8B4513;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Brown h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #A0522D;
-}
-
-#news-feed.Brown h4 a {
-    color: #A0522D;
-    text-decoration: none;
-}
-
-#news-feed.Brown h4 a:hover {
-    color: #D2691E;
-}
-
-#news-feed.Brown h4 a:visited {
-    color: #D2691E;
-}
-
-#news-feed.Brown p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8B4513;
-}
-
-#news-feed.Brown hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Brown {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #A0522D;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Brown:hover {
-    background-color: #D2691E;
-}
-
-/* Style the menu */
-#menu.Brown {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #8B4513;
-    border: 1px solid #A0522D;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Purple {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #D8BFD8;
-    color: black;
-}
-
-/* Style the header */
-header.Purple {
-    background-color: #800080;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Purple {
-    margin: 20px;
-    padding: 20px;
-    background-color: #800080;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Purple {
-    color: #9370DB;
-    text-decoration: none;
-}
-
-a.Purple:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Purple {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #800080;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Purple h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #9370DB;
-}
-
-#news-feed.Purple h4 a {
-    color: #9370DB;
-    text-decoration: none;
-}
-
-#news-feed.Purple h4 a:hover {
-    color: #BA55D3;
-}
-
-#news-feed.Purple h4 a:visited {
-    color: #BA55D3;
-}
-
-#news-feed.Purple p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8A2BE2;
-}
-
-#news-feed.Purple hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Purple {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #9370DB;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Purple:hover {
-    background-color: #BA55D3;
-}
-
-/* Style the menu */
-#menu.Purple {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #800080;
-    border: 1px solid #9370DB;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Green {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #90EE90;
-    color: black;
-}
-
-/* Style the header */
-header.Green {
-    background-color: #008000;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Green {
-    margin: 20px;
-    padding: 20px;
-    background-color: #008000;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Green {
-    color: #32CD32;
-    text-decoration: none;
-}
-
-a.Green:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Green {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #008000;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Green h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #32CD32;
-}
-
-#news-feed.Green h4 a {
-    color: #32CD32;
-    text-decoration: none;
-}
-
-#news-feed.Green h4 a:hover {
-    color: #00FF00;
-}
-
-#news-feed.Green h4 a:visited {
-    color: #00FF00;
-}
-
-#news-feed.Green p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #006400;
-}
-
-#news-feed.Green hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Green {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #32CD32;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Green:hover {
-    background-color: #00FF00;
-}
-
-/* Style the menu */
-#menu.Green {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #008000;
-    border: 1px solid #32CD32;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Red {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FFC0CB;
-    color: black;
-}
-
-/* Style the header */
-header.Red {
-    background-color: #FF0000;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Red {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FF0000;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Red {
-    color: #FF6347;
-    text-decoration: none;
-}
-
-a.Red:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Red {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FF0000;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Red h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FF6347;
-}
-
-#news-feed.Red h4 a {
-    color: #FF6347;
-    text-decoration: none;
-}
-
-#news-feed.Red h4 a:hover {
-    color: #FF4500;
-}
-
-#news-feed.Red h4 a:visited {
-    color: #FF4500;
-}
-
-#news-feed.Red p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8B0000;
-}
-
-#news-feed.Red hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Red {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF6347;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Red:hover {
-    background-color: #FF4500;
-}
-
-/* Style the menu */
-#menu.Red {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF0000;
-    border: 1px solid #FF6347;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Gray {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #D3D3D3;
-    color: black;
-}
-
-/* Style the header */
-header.Gray {
-    background-color: #808080;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Gray {
-    margin: 20px;
-    padding: 20px;
-    background-color: #808080;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Gray {
-    color: #696969;
-    text-decoration: none;
-}
-
-a.Gray:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Gray {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #808080;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Gray h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #696969;
-}
-
-#news-feed.Gray h4 a {
-    color: #696969;
-    text-decoration: none;
-}
-
-#news-feed.Gray h4 a:hover {
-    color: #A9A9A9;
-}
-
-#news-feed.Gray h4 a:visited {
-    color: #A9A9A9;
-}
-
-#news-feed.Gray p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #696969;
-}
-
-#news-feed.Gray hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Gray {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #696969;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Gray:hover {
-    background-color: #A9A9A9;
-}
-
-/* Style the menu */
-#menu.Gray {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #808080;
-    border: 1px solid #696969;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Yellow {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FFFFE0;
-    color: black;
-}
-
-/* Style the header */
-header.Yellow {
-    background-color: #FFD700;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Yellow {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FFD700;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Yellow {
-    color: #FFA500;
-    text-decoration: none;
-}
-
-a.Yellow:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Yellow {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FFD700;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Yellow h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FFA500;
-}
-
-#news-feed.Yellow h4 a {
-    color: #FFA500;
-    text-decoration: none;
-}
-
-#news-feed.Yellow h4 a:hover {
-    color: #FF8C00;
-}
-
-#news-feed.Yellow h4 a:visited {
-    color: #FF8C00;
-}
-
-#news-feed.Yellow p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #DAA520;
-}
-
-#news-feed.Yellow hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Yellow {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FFA500;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Yellow:hover {
-    background-color: #FF8C00;
-}
-
-/* Style the menu */
-#menu.Yellow {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FFD700;
-    border: 1px solid #FFA500;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Pink {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FFB6C1;
-    color: black;
-}
-
-/* Style the header */
-header.Pink {
-    background-color: #FF1493;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Pink {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FF1493;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Pink {
-    color: #FF69B4;
-    text-decoration: none;
-}
-
-a.Pink:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Pink {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FF1493;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Pink h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FF69B4;
-}
-
-#news-feed.Pink h4 a {
-    color: #FF69B4;
-    text-decoration: none;
-}
-
-#news-feed.Pink h4 a:hover {
-    color: #FF1493;
-}
-
-#news-feed.Pink h4 a:visited {
-    color: #FF1493;
-}
-
-#news-feed.Pink p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #FF69B4;
-}
-
-#news-feed.Pink hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Pink {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF69B4;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Pink:hover {
-    background-color: #FF1493;
-}
-
-/* Style the menu */
-#menu.Pink {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF1493;
-    border: 1px solid #FF69B4;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Cyan {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #E0FFFF;
-    color: black;
-}
-
-/* Style the header */
-header.Cyan {
-    background-color: #00FFFF;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Cyan {
-    margin: 20px;
-    padding: 20px;
-    background-color: #00FFFF;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Cyan {
-    color: #00CED1;
-    text-decoration: none;
-}
-
-a.Cyan:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Cyan {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #00FFFF;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Cyan h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #00CED1;
-}
-
-#news-feed.Cyan h4 a {
-    color: #00CED1;
-    text-decoration: none;
-}
-
-#news-feed.Cyan h4 a:hover {
-    color: #20B2AA;
-}
-
-#news-feed.Cyan h4 a:visited {
-    color: #20B2AA;
-}
-
-#news-feed.Cyan p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #008B8B;
-}
-
-#news-feed.Cyan hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Cyan {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #00CED1;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Cyan:hover {
-    background-color: #20B2AA;
-}
-
-/* Style the menu */
-#menu.Cyan {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #00FFFF;
-    border: 1px solid #00CED1;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the header */
-header.Cyan {
-    background-color: #00FFFF;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Set the font family and size for the entire page */
-body.Silver {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #C0C0C0;
-    color: black;
-}
-
-/* Style the header */
-header.Silver {
-    background-color: #C0C0C0;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Silver {
-    margin: 20px;
-    padding: 20px;
-    background-color: #C0C0C0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Silver {
-    color: #A9A9A9;
-    text-decoration: none;
-}
-
-a.Silver:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Silver {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #C0C0C0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Silver h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #A9A9A9;
-}
-
-#news-feed.Silver h4 a {
-    color: #A9A9A9;
-    text-decoration: none;
-}
-
-#news-feed.Silver h4 a:hover {
-    color: #808080;
-}
-
-#news-feed.Silver h4 a:visited {
-    color: #808080;
-}
-
-#news-feed.Silver p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #696969;
-}
-
-#news-feed.Silver hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Silver {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #A9A9A9;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Silver:hover {
-    background-color: #808080;
-}
-
-/* Style the menu */
-#menu.Silver {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #C0C0C0;
-    border: 1px solid #A9A9A9;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Gold {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FFD700;
-    color: black;
-}
-
-/* Style the header */
-header.Gold {
-    background-color: #FFD700;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Gold {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FFD700;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Gold {
-    color: #FFA500;
-    text-decoration: none;
-}
-
-a.Gold:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Gold {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FFD700;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Gold h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FFA500;
-}
-
-#news-feed.Gold h4 a {
-    color: #FFA500;
-    text-decoration: none;
-}
-
-#news-feed.Gold h4 a:hover {
-    color: #FF8C00;
-}
-
-#news-feed.Gold h4 a:visited {
-    color: #FF8C00;
-}
-
-#news-feed.Gold p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #DAA520;
-}
-
-#news-feed.Gold hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Gold {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FFA500;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Gold:hover {
-    background-color: #FF8C00;
-}
-
-/* Style the menu */
-#menu.Gold {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FFD700;
-    border: 1px solid #FFA500;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Maroon {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #800000;
-    color: black;
-}
-
-/* Style the header */
-header.Maroon {
-    background-color: #800000;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Maroon {
-    margin: 20px;
-    padding: 20px;
-    background-color: #800000;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Maroon {
-    color: #A52A2A;
-    text-decoration: none;
-}
-
-a.Maroon:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Maroon {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #800000;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Maroon h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #A52A2A;
-}
-
-#news-feed.Maroon h4 a {
-    color: #A52A2A;
-    text-decoration: none;
-}
-
-#news-feed.Maroon h4 a:hover {
-    color: #B22222;
-}
-
-#news-feed.Maroon h4 a:visited {
-    color: #B22222;
-}
-
-#news-feed.Maroon p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8B0000;
-}
-
-#news-feed.Maroon hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Maroon {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #A52A2A;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Maroon:hover {
-    background-color: #B22222;
-}
-
-/* Style the menu */
-#menu.Maroon {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #800000;
-    border: 1px solid #A52A2A;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Navy {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #000080;
-    color: black;
-}
-
-/* Style the header */
-header.Navy {
-    background-color: #000080;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Navy {
-    margin: 20px;
-    padding: 20px;
-    background-color: #000080;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Navy {
-    color: #0000CD;
-    text-decoration: none;
-}
-
-a.Navy:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Navy {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #000080;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Navy h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #0000CD;
-}
-
-#news-feed.Navy h4 a {
-    color: #0000CD;
-    text-decoration: none;
-}
-
-#news-feed.Navy h4 a:hover {
-    color: #1E90FF;
-}
-
-#news-feed.Navy h4 a:visited {
-    color: #1E90FF;
-}
-
-#news-feed.Navy p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #00008B;
-}
-
-#news-feed.Navy hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Navy {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #0000CD;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Navy:hover {
-    background-color: #1E90FF;
-}
-
-/* Style the menu */
-#menu.Navy {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #000080;
-    border: 1px solid #0000CD;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Olive {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #808000;
-    color: black;
-}
-
-/* Style the header */
-header.Olive {
-    background-color: #808000;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Olive {
-    margin: 20px;
-    padding: 20px;
-    background-color: #808000;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Olive {
-    color: #6B8E23;
-    text-decoration: none;
-}
-
-a.Olive:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Olive {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #808000;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Olive h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #6B8E23;
-}
-
-#news-feed.Olive h4 a {
-    color: #6B8E23;
-    text-decoration: none;
-}
-
-#news-feed.Olive h4 a:hover {
-    color: #556B2F;
-}
-
-#news-feed.Olive h4 a:visited {
-    color: #556B2F;
-}
-
-#news-feed.Olive p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #556B2F;
-}
-
-#news-feed.Olive hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Olive {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #6B8E23;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Olive:hover {
-    background-color: #556B2F;
-}
-
-/* Style the menu */
-#menu.Olive {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #808000;
-    border: 1px solid #6B8E23;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Aqua {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #00FFFF;
-    color: black;
-}
-
-/* Style the header */
-header.Aqua {
-    background-color: #00FFFF;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Aqua {
-    margin: 20px;
-    padding: 20px;
-    background-color: #00FFFF;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Aqua {
-    color: #00CED1;
-    text-decoration: none;
-}
-
-a.Aqua:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Aqua {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #00FFFF;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Aqua h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #00CED1;
-}
-
-#news-feed.Aqua h4 a {
-    color: #00CED1;
-    text-decoration: none;
-}
-
-#news-feed.Aqua h4 a:hover {
-    color: #20B2AA;
-}
-
-#news-feed.Aqua h4 a:visited {
-    color: #20B2AA;
-}
-
-#news-feed.Aqua p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #008B8B;
-}
-
-#news-feed.Aqua hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Aqua {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #00CED1;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Aqua:hover {
-    background-color: #20B2AA;
-}
-
-/* Style the menu */
-#menu.Aqua {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #00FFFF;
-    border: 1px solid #00CED1;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Tomato {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FF6347;
-    color: black;
-}
-
-/* Style the header */
-header.Tomato {
-    background-color: #FF6347;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Tomato {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FF6347;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Tomato {
-    color: #CD5C5C;
-    text-decoration: none;
-}
-
-a.Tomato:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Tomato {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FF6347;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Tomato h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #CD5C5C;
-}
-
-#news-feed.Tomato h4 a {
-    color: #CD5C5C;
-    text-decoration: none;
-}
-
-#news-feed.Tomato h4 a:hover {
-    color: #FF4500;
-}
-
-#news-feed.Tomato h4 a:visited {
-    color: #FF4500;
-}
-
-#news-feed.Tomato p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #8B0000;
-}
-
-#news-feed.Tomato hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Tomato {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #CD5C5C;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Tomato:hover {
-    background-color: #FF4500;
-}
-
-/* Style the menu */
-#menu.Tomato {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF6347;
-    border: 1px solid #CD5C5C;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Set the font family and size for the entire page */
-body.Coral {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    background-color: #FF7F50;
-    color: black;
-}
-
-/* Style the header */
-header.Coral {
-    background-color: #FF7F50;
-    color: #fff;
-    padding: 20px;
-}
-
-/* Style the main content area */
-main.Coral {
-    margin: 20px;
-    padding: 20px;
-    background-color: #FF7F50;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style the links */
-a.Coral {
-    color: #FF4500;
-    text-decoration: none;
-}
-
-a.Coral:hover {
-    text-decoration: underline;
-}
-
-/* Style the News Feed */
-#news-feed.Coral {
-    margin: 50px auto;
-    width: 65%;
-    background-color: #FF7F50;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#news-feed.Coral h4 {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #FF4500;
-}
-
-#news-feed.Coral h4 a {
-    color: #FF4500;
-    text-decoration: none;
-}
-
-#news-feed.Coral h4 a:hover {
-    color: #FF6347;
-}
-
-#news-feed.Coral h4 a:visited {
-    color: #FF6347;
-}
-
-#news-feed.Coral p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #CD5C5C;
-}
-
-#news-feed.Coral hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin: 10px 0;
-    width: 20%;
-}
-
-/* Style the menu button */
-#menu-button.Coral {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF4500;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#menu-button.Coral:hover {
-    background-color: #FF6347;
-}
-
-/* Style the menu */
-#menu.Coral {
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    color: #fff;
-    background-color: #FF7F50;
-    border: 1px solid #FF4500;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+pre {
+    padding: var(--spacing-sm);
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+}
+
+/* Accessibility Improvements */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body:not([class*="theme"]) {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-card: #222222;
+        --bg-hover: #3a3a3a;
+        --text-primary: #e8e6e3;
+        --text-secondary: #b0b0b0;
+        --text-muted: #8a8a8a;
+        --text-visited: #bb86fc;
+        --link-color: #64b5f6;
+        --link-hover: #42a5f5;
+        --accent-color: #03dac6;
+        --border-color: #404040;
+        --border-light: #333333;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+    }
 }
 
 .align-left {
     text-align: left;
 }
+
