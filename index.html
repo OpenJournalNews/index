@@ -20,7 +20,7 @@
 </head>
 <body>
     <!-- Drop Menu code with top buttons inside -->
-    <button id="drop-menu" style="margin-bottom: 10px">&#8226;</button>
+    <button id="drop-menu" style="margin-left: 5px; margin-top: 10px; margin-bottom: 10px">&#8226;</button>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const buttons = [ 'about-button', 'blogs-button', 'research-button', 'hearts-button', 'comments-button', 'meet-button'];
@@ -44,6 +44,7 @@
                         element.style.position = 'static'; // Return to normal flow
                         element.style.visibility = 'visible'; // Show the button
                         element.style.marginBottom = '10px'; // Add bottom margin
+                        element.style.margineft = '5px'; // Add left margin
                         if (window.innerWidth < 700) {
                             element.style.display = 'block'; // Display as block
                         } else {
