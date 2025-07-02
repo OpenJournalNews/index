@@ -730,30 +730,6 @@
     <button id="menu-button">Menu</button>
     <div id="menu" style="display: none;">
         <div>
-            <label for="theme-select">Theme:</label>
-            <select id="theme-select">
-                <option value="Aqua">Aqua</option>
-                <option value="Blue">Blue</option>
-                <option value="Brown">Brown</option>
-                <option value="Coral">Coral</option>
-                <option value="Cyan">Cyan</option>
-                <option value="Gold">Gold</option>
-                <option value="Gray">Gray</option>
-                <option value="Green">Green</option>
-                <option value="Maroon">Maroon</option>
-                <option value="Navy">Navy</option>
-                <option value="Olive">Olive</option>
-                <option value="Orange">Orange</option>
-                <option value="Pink">Pink</option>
-                <option value="Purple">Purple</option>
-                <option value="Red">Red</option>
-                <option value="Silver">Silver</option>
-                <option value="Tomato">Tomato</option>
-                <option value="White" selected>White</option>
-                <option value="Yellow">Yellow</option>
-            </select>
-        </div>
-        <div>
             <label for="categories">Categories:</label>
             <select id="categories">
                 <option value="Yes" selected>Yes</option>
@@ -1956,20 +1932,6 @@
                 navigationSelect.value = 'No';
                 navigationMenu.style.display = 'none';
             }
-        });
-        
-        const themeSelect = document.getElementById('theme-select');
-        const body = document.getElementsByTagName('body')[0];
-
-        // Check if theme value is stored in localStorage
-        if (localStorage.getItem('theme')) {
-            body.className = localStorage.getItem('theme');
-            themeSelect.value = localStorage.getItem('theme');
-        }
-
-        themeSelect.addEventListener('change', () => {
-            body.className = themeSelect.value;
-            localStorage.setItem('theme', themeSelect.value);
         });
 
         // Check if Endless Scroll value is stored in localStorage

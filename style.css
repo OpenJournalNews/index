@@ -1,62 +1,42 @@
-/* Solarized Light Quadratic Retro Theme Variables */
+/* Simple HTML-Style Theme Variables */
 :root {
-    --font-primary: 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    --font-size-base: 15px;
-    --font-size-small: 13px;
+    --font-primary: Arial, sans-serif;
+    --font-size-base: 16px;
+    --font-size-small: 14px;
     --font-size-large: 18px;
-    --line-height: 1.7;
-    --border-radius: 0px;
-    --shadow: 4px 4px 0px rgba(181, 137, 0, 0.3);
-    --transition: all 0.2s ease;
-    --spacing-xs: 8px;
-    --spacing-sm: 16px;
-    --spacing-md: 24px;
-    --spacing-lg: 48px;
+    --line-height: 1.5;
+    --border-radius: 3px;
+    --transition: none;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
     
-    /* Solarized Light Color Palette */
-    --sol-base03: #002b36;
-    --sol-base02: #073642;
-    --sol-base01: #586e75;
-    --sol-base00: #657b83;
-    --sol-base0: #839496;
-    --sol-base1: #93a1a1;
-    --sol-base2: #eee8d5;
-    --sol-base3: #fdf6e3;
-    --sol-yellow: #b58900;
-    --sol-orange: #cb4b16;
-    --sol-red: #dc322f;
-    --sol-magenta: #d33682;
-    --sol-violet: #6c71c4;
-    --sol-blue: #268bd2;
-    --sol-cyan: #2aa198;
-    --sol-green: #859900;
-    
-    /* Theme Variables */
-    --bg-primary: var(--sol-base3);
-    --bg-secondary: var(--sol-base2);
-    --bg-card: #fefcf7;
-    --bg-hover: #f5f0e8;
-    --text-primary: var(--sol-base02);
-    --text-secondary: var(--sol-base01);
-    --text-muted: var(--sol-base1);
-    --text-visited: var(--sol-violet);
-    --link-color: var(--sol-blue);
-    --link-hover: var(--sol-cyan);
-    --accent-color: var(--sol-yellow);
-    --border-color: #e6dcc6;
-    --border-light: #f0ead5;
-    --retro-shadow: 6px 6px 0px rgba(181, 137, 0, 0.4);
+    /* Simple Web Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f0f0;
+    --bg-card: #ffffff;
+    --bg-hover: #e0e0e0;
+    --text-primary: #000000;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --text-visited: #800080;
+    --link-color: #0000ff;
+    --link-hover: #ff0000;
+    --accent-color: #000000;
+    --border-color: #cccccc;
+    --border-light: #e0e0e0;
 }
 
-/* Base styles with quadratic retro design */
+/* Base styles simple HTML design */
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-base);
     line-height: var(--line-height);
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    background: var(--bg-primary);
     color: var(--text-primary);
-    transition: var(--transition);
-    letter-spacing: 0.025em;
+    margin: 0;
+    padding: 0;
 }
 
 /* Base Layout Styles */
@@ -72,36 +52,33 @@ main {
     top: var(--spacing-sm);
     right: var(--spacing-sm);
     font-family: var(--font-primary);
-    font-size: var(--font-size-small);
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-base);
+    background: #f0f0f0;
+    border: 2px outset #f0f0f0;
+    padding: var(--spacing-xs);
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    margin-left: 5px;
 }
 
 #menu-button:hover {
-    background: var(--bg-hover);
-    transform: translate(-2px, -2px);
-    box-shadow: var(--retro-shadow);
-    border-color: var(--accent-color);
+    background: #e0e0e0;
+    border: 2px outset #e0e0e0;
+}
+
+#menu-button:active {
+    border: 2px inset #f0f0f0;
 }
 
 #menu {
     position: absolute;
-    top: var(--spacing-lg);
+    top: calc(var(--spacing-sm) + 32px);
     right: var(--spacing-sm);
     font-family: var(--font-primary);
-    font-size: var(--font-size-small);
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    background: #f0f0f0;
+    border: 2px inset #f0f0f0;
     padding: var(--spacing-sm);
-    box-shadow: var(--retro-shadow);
+    margin-left: 5px;
 }
 
 .icon-container {
@@ -112,37 +89,17 @@ main {
 
 h1 {
     font-size: 2.5rem;
-    font-weight: 800;
+    font-weight: bold;
     margin: var(--spacing-md) 0;
-    text-shadow: 2px 2px 4px rgba(181, 137, 0, 0.1);
-    letter-spacing: -0.02em;
 }
 
 h1 a {
     color: var(--text-primary);
     text-decoration: none;
-    transition: var(--transition);
-    position: relative;
 }
 
 h1 a:hover {
-    color: var(--accent-color);
-    text-shadow: 2px 2px 0px rgba(181, 137, 0, 0.6);
-}
-
-h1 a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 4px;
-    background: var(--accent-color);
-    transition: var(--transition);
-}
-
-h1 a:hover::after {
-    width: 100%;
+    color: var(--link-hover);
 }
 
 h5 {
@@ -160,85 +117,34 @@ h5 {
 }
 
 hr {
-    border: none;
-    height: 4px;
-    background: var(--accent-color);
+    border: 1px solid var(--border-color);
     margin: var(--spacing-md) auto;
     width: 65%;
     max-width: 400px;
-    position: relative;
-    box-shadow: 2px 2px 0px rgba(181, 137, 0, 0.4);
 }
 
-hr::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 12px;
-    height: 12px;
-    background: var(--accent-color);
-    box-shadow: 2px 2px 0px rgba(181, 137, 0, 0.6);
-}
-
-/* Enhanced Link Styles with Retro Effects */
+/* Simple Link Styles */
 a {
     color: var(--link-color);
-    text-decoration: none;
-    transition: var(--transition);
-    position: relative;
-    font-weight: 500;
-}
-
-a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 3px;
-    background: var(--link-color);
-    transition: var(--transition);
+    text-decoration: underline;
 }
 
 a:hover {
     color: var(--link-hover);
-    text-shadow: 1px 1px 0px rgba(38, 139, 210, 0.6);
-}
-
-a:hover::after {
-    width: 100%;
 }
 
 a:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    box-shadow: var(--retro-shadow);
+    outline: 1px solid var(--accent-color);
 }
 
-/* Enhanced News Feed with Quadratic Design */
+/* Simple News Feed */
 #news-feed {
     margin: var(--spacing-lg) auto;
     width: min(65%, 800px);
     padding: var(--spacing-md);
     background: var(--bg-card);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    box-shadow: var(--retro-shadow);
-    position: relative;
-}
-
-#news-feed::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: var(--accent-color);
-    z-index: -1;
-    opacity: 0.15;
 }
 
 #news-feed h4 {
@@ -274,43 +180,10 @@ a:focus {
     width: 30%;
 }
 
-/* ============ SOLARIZED LIGHT QUADRATIC RETRO THEME ============ */
-
-/* Single Solarized Light Theme - Quadratic High-End Retro Design */
+/* Simple Layout */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-}
-
-/* Simplified Quadratic Retro Design Elements */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        linear-gradient(135deg, rgba(181, 137, 0, 0.05) 0%, transparent 50%),
-        linear-gradient(45deg, rgba(38, 139, 210, 0.03) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Sharp Quadratic Grid Pattern */
-main::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(rgba(181, 137, 0, 0.08) 2px, transparent 2px),
-        linear-gradient(90deg, rgba(181, 137, 0, 0.08) 2px, transparent 2px);
-    background-size: 32px 32px;
-    pointer-events: none;
-    z-index: -1;
 }
 
 main {
@@ -363,49 +236,29 @@ p {
     line-height: var(--line-height);
 }
 
-/* Enhanced Interactive Elements with Quadratic Retro Design */
+/* HTML-style Interactive Elements */
 button, .button {
     font-family: var(--font-primary);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius);
-    border: 2px solid var(--border-color);
-    background: var(--bg-card);
+    padding: var(--spacing-xs);
+    border: 2px outset #f0f0f0;
+    background: #f0f0f0;
     color: var(--text-primary);
     cursor: pointer;
-    transition: var(--transition);
-    font-size: var(--font-size-small);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    position: relative;
-    overflow: hidden;
-}
-
-button::before, .button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(181, 137, 0, 0.2), transparent);
-    transition: var(--transition);
-}
-
-button:hover::before, .button:hover::before {
-    left: 100%;
+    font-size: var(--font-size-base);
+    margin-left: 5px;
 }
 
 button:hover, .button:hover {
-    background: var(--bg-hover);
-    transform: translate(-2px, -2px);
-    box-shadow: var(--retro-shadow);
-    border-color: var(--accent-color);
+    background: #e0e0e0;
+    border: 2px outset #e0e0e0;
+}
+
+button:active, .button:active {
+    border: 2px inset #f0f0f0;
 }
 
 button:focus, .button:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    box-shadow: var(--retro-shadow);
+    outline: 1px dotted var(--accent-color);
 }
 
 /* Utility Classes */
@@ -425,47 +278,24 @@ button:focus, .button:focus {
 .p-md { padding: var(--spacing-md); }
 .p-lg { padding: var(--spacing-lg); }
 
-/* Enhanced Code and Monospace Text */
+/* Simple Code and Monospace Text */
 code, pre, .monospace {
-    font-family: var(--font-primary);
+    font-family: 'Courier New', monospace;
     background: var(--bg-secondary);
     padding: 4px 8px;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     font-size: 0.9em;
-    box-shadow: 2px 2px 0px rgba(181, 137, 0, 0.2);
 }
 
 pre {
     padding: var(--spacing-sm);
     overflow-x: auto;
-    border: 2px solid var(--border-color);
-    box-shadow: var(--retro-shadow);
+    border: 1px solid var(--border-color);
 }
 
-/* Accessibility Improvements */
+/* Simple Focus Styles */
 :focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-
-@media (prefers-color-scheme: dark) {
-    body:not([class*="theme"]) {
-        --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
-        --bg-card: #222222;
-        --bg-hover: #3a3a3a;
-        --text-primary: #e8e6e3;
-        --text-secondary: #b0b0b0;
-        --text-muted: #8a8a8a;
-        --text-visited: #bb86fc;
-        --link-color: #64b5f6;
-        --link-hover: #42a5f5;
-        --accent-color: #03dac6;
-        --border-color: #404040;
-        --border-light: #333333;
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-    }
+    outline: 1px solid var(--accent-color);
 }
 
 .align-left {
