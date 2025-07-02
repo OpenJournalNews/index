@@ -154,22 +154,22 @@ a:focus {
 }
 
 #news-feed h4 a {
-    color: var(--text-primary, #2c3e50);
+    color: #0000ff;
     font-weight: 600;
 }
 
 #news-feed h4 a:hover {
-    color: var(--accent-color, #3498db);
+    color: #0000ff;
 }
 
 #news-feed h4 a:visited {
-    color: var(--text-visited, #6f42c1);
+    color: #800080;
 }
 
 #news-feed p {
     margin: var(--spacing-xs) 0 var(--spacing-md);
     font-size: var(--font-size-small);
-    color: var(--text-secondary, #6c757d);
+    color: var(--text-secondary);
     line-height: var(--line-height);
 }
 
