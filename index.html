@@ -2077,15 +2077,6 @@
                 }
             });
             
-            // Uncheck categories
-            categoriesSelect.value = 'No';
-            // Update page
-            localStorage.setItem('categoryMenuEnabled', 'false');
-            // Disable categories if endless scroll is enabled
-            categoryMenu.style.display = 'none';
-
-            // Disable categories select
-            categoriesSelect.disabled = true;
             }
 
             // If endless scroll is unchecked then refresh page
