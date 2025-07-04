@@ -1015,7 +1015,7 @@
                 if (!isSearching || !currentSearchTerm) return;
                 
                 searchCurrentPage++;
-                const newsEntries = Number(newsEntriesSelect.value);
+                const newsEntries = 8; // Load fewer articles for endless scroll
                 
                 fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(currentSearchTerm)}&tags=story&hitsPerPage=${newsEntries}&page=${searchCurrentPage}`)
                     .then(response => response.json())
@@ -1082,7 +1082,7 @@
                 if (!isCategoryMode || !currentCategory) return;
                 
                 categoryCurrentPage++;
-                const newsEntries = Number(newsEntriesSelect.value);
+                const newsEntries = 8; // Load fewer articles for endless scroll
                 
                 fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${currentCategory}&tags=story&hitsPerPage=${newsEntries}&page=${categoryCurrentPage}`)
                     .then(response => response.json())
@@ -2040,6 +2040,22 @@
             });
         }
 
+        function fetchAndDisplayTopStoriesEndlessScroll() {
+            fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
+            .then(response => response.json())
+            .then(data => {
+                // Load only 8 articles for endless scroll
+                const endlessScrollBatchSize = 8;
+                const newLastIndex = lastIndex + endlessScrollBatchSize;
+                // Slice the data from the last index to the new last index
+                const topStories = data.slice(lastIndex, newLastIndex);
+                // Update lastIndex for the next fetch
+                lastIndex = newLastIndex;
+                // Fetch and display the stories
+                fetchAndDisplayStories(topStories);
+            });
+        }
+
         // Check if Show Numbers value is stored in localStorage
         if (localStorage.getItem('showNumbers')) {
             showNumbersCheckbox.checked = localStorage.getItem('showNumbers') === 'true';
@@ -2048,6 +2064,22 @@
         // Check if endless scroll value is stored in localStorage
         if (localStorage.getItem('endlessScroll')) {
             endlessScrollCheckbox.checked = localStorage.getItem('endlessScroll') === 'true';
+            
+            // Initialize scroll handler if endless scroll is enabled
+            if (endlessScrollCheckbox.checked) {
+                scrollHandler = () => {
+                    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 15)) { // 5 pixels threshold
+                        if (isSearching) {
+                            loadMoreSearchResults();
+                        } else if (isCategoryMode) {
+                            loadMoreCategoryResults();
+                        } else {
+                            fetchAndDisplayTopStoriesEndlessScroll();
+                        }
+                    }
+                };
+                window.addEventListener('scroll', scrollHandler);
+            }
         }
 
         fetchAndDisplayTopStories();
@@ -2062,26 +2094,32 @@
             location.reload();
         });
 
+        // Store reference to scroll handler for cleanup
+        let scrollHandler = null;
+
         endlessScrollCheckbox.addEventListener('change', () => {
             localStorage.setItem('endlessScroll', endlessScrollCheckbox.checked);
-            if (endlessScrollCheckbox.checked) {
-            window.addEventListener('scroll', () => {
-                if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 15)) { // 5 pixels threshold
-                    if (isSearching) {
-                        loadMoreSearchResults();
-                    } else if (isCategoryMode) {
-                        loadMoreCategoryResults();
-                    } else {
-                        fetchAndDisplayTopStories();
-                    }
-                }
-            });
             
-            }
-
-            // If endless scroll is unchecked then refresh page
-            if (!endlessScrollCheckbox.checked) {
-                location.reload();
+            if (endlessScrollCheckbox.checked) {
+                // Create and add scroll event listener
+                scrollHandler = () => {
+                    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 15)) { // 5 pixels threshold
+                        if (isSearching) {
+                            loadMoreSearchResults();
+                        } else if (isCategoryMode) {
+                            loadMoreCategoryResults();
+                        } else {
+                            fetchAndDisplayTopStoriesEndlessScroll();
+                        }
+                    }
+                };
+                window.addEventListener('scroll', scrollHandler);
+            } else {
+                // Remove scroll event listener when unchecked
+                if (scrollHandler) {
+                    window.removeEventListener('scroll', scrollHandler);
+                    scrollHandler = null;
+                }
             }
         });
 
