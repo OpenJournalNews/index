@@ -970,6 +970,7 @@
                                         <h4>${showNumbersCheckbox.checked ? ++currentIndex + '. ' : ''}<img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1099,6 +1100,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1153,6 +1155,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1207,6 +1210,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1261,6 +1265,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1315,6 +1320,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1369,6 +1375,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1423,6 +1430,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1477,6 +1485,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1531,6 +1540,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1585,6 +1595,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1639,6 +1650,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1693,6 +1705,7 @@
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
+                                        <p>${hit.points} points</p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1755,6 +1768,7 @@
                         <h4>${showNumbersCheckbox.checked ? ++currentIndex + '. ' : ''}<img src="https://www.google.com/s2/favicons?domain=${new URL(story.url).hostname}" alt="${new URL(story.url).hostname} favicon">
                         <a href="${story.url}" style="user-select: none;">${story.title}</a></h4>
                         <p>Source: ${new URL(story.url).hostname}</p>
+                        <p>${story.score} points</p>
                         <p>${new Date(story.time * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                         <button class="like-button" data-story-id="${story.id}" data-liked="false">&#x2661;</button>
                         <span class="like-count" id="like-count-${story.id}">0</span>
