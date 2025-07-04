@@ -934,24 +934,20 @@
             }  
 
             searchButton.addEventListener('click', () => {
-                // If clicked then disable news entries select
-                newsEntriesSelect.disabled = true;
-
-                // If clicked then disable show numbers checkbox
-                showNumbersCheckbox.disabled = true;
-
-                // If clicked then disable and uncheck endless scroll checkbox
-                endlessScrollCheckbox.checked = false;
-                endlessScrollCheckbox.disabled = true;
-
                 // Save endless scroll value to localStorage
                 localStorage.setItem('endlessScroll', endlessScrollCheckbox.checked);
                 
                 const searchTerm = searchInput.value;
                 const newsEntries = Number(newsEntriesSelect.value);
                 if (searchTerm) {
+                    // Set search state
+                    isSearching = true;
+                    isCategoryMode = false;
+                    currentSearchTerm = searchTerm;
+                    searchCurrentPage = 0;
+                    
                     // Perform search logic here
-                    fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchTerm)}&tags=story&hitsPerPage=${newsEntries}`)
+                    fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchTerm)}&tags=story&hitsPerPage=${newsEntries}&page=${searchCurrentPage}`)
                         .then(response => response.json())
                         .then(data => {
                             // Clear existing stories
@@ -1013,6 +1009,132 @@
                         });
                 }
             });
+
+            // Function to load more search results
+            function loadMoreSearchResults() {
+                if (!isSearching || !currentSearchTerm) return;
+                
+                searchCurrentPage++;
+                const newsEntries = Number(newsEntriesSelect.value);
+                
+                fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(currentSearchTerm)}&tags=story&hitsPerPage=${newsEntries}&page=${searchCurrentPage}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Append new search results
+                        const hits = data.hits.slice(0, newsEntries);
+                        let index = 0;
+                        
+                        function fetchAndDisplayStory() {
+                            if (index < hits.length) {
+                                const hit = hits[index];
+                                const storyElement = document.createElement('div');
+                                storyElement.innerHTML = `
+                                    <h4>${showNumbersCheckbox.checked ? ++currentIndex + '. ' : ''}<img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
+                                    <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
+                                    <p>Source: ${new URL(hit.url).hostname}</p>
+                                    <p>${hit.points} points</p>
+                                    <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
+                                    <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
+                                    <span class="like-count" id="like-count-${hit.objectID}">0</span>
+                                `;
+                                
+                                // Add event listener to like button
+                                const likeButton = storyElement.querySelector('.like-button');
+                                likeButton.addEventListener('click', () => {
+                                    const storyId = likeButton.dataset.storyId;
+                                    const liked = likeButton.dataset.liked === 'true';
+                                    const likeCount = document.getElementById(`like-count-${storyId}`);
+                                    likeButton.dataset.liked = !liked;
+                                    likeButton.innerHTML = liked ? '&#x2661;' : '&#x2665;';
+                                    likeCount.textContent = Number(likeCount.textContent) + (liked ? -1 : 1);
+                                    
+                                    // Save liked status to local storage
+                                    const likedStories = JSON.parse(localStorage.getItem('likedStories')) || {};
+                                    likedStories[storyId] = !liked;
+                                    localStorage.setItem('likedStories', JSON.stringify(likedStories));
+                                });
+                                
+                                // Update like button based on local storage
+                                const likedStories = JSON.parse(localStorage.getItem('likedStories')) || {};
+                                if (likedStories[hit.objectID]) {
+                                    likeButton.dataset.liked = true;
+                                    likeButton.innerHTML = '&#x2665;';
+                                    const likeCount = document.getElementById(`like-count-${hit.objectID}`);
+                                    likeCount.textContent = Number(likeCount.textContent) + 1;
+                                }
+                                
+                                currentStories.push(storyElement);
+                                newsFeed.appendChild(storyElement);
+                                newsFeed.appendChild(document.createElement('p'));
+                                index++;
+                                fetchAndDisplayStory();
+                            }
+                        }
+                        fetchAndDisplayStory();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching more search results:', error);
+                    });
+            }
+
+            // Function to load more category results
+            function loadMoreCategoryResults() {
+                if (!isCategoryMode || !currentCategory) return;
+                
+                categoryCurrentPage++;
+                const newsEntries = Number(newsEntriesSelect.value);
+                
+                fetch(`https://hn.algolia.com/api/v1/search_by_date?query=${currentCategory}&tags=story&hitsPerPage=${newsEntries}&page=${categoryCurrentPage}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Append new category results
+                        const hits = data.hits.slice(0, newsEntries);
+                        hits.forEach((hit, index) => {
+                            const storyElement = document.createElement('div');
+                            storyElement.innerHTML = `
+                                <h4>${showNumbersCheckbox.checked ? ++currentIndex + '. ' : ''}<img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
+                                <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
+                                <p>Source: ${new URL(hit.url).hostname}</p>
+                                <p>${hit.points} points</p>
+                                <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
+                                <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
+                                <span class="like-count" id="like-count-${hit.objectID}">0</span>
+                            `;
+                            
+                            // Add event listener to like button
+                            const likeButton = storyElement.querySelector('.like-button');
+                            likeButton.addEventListener('click', () => {
+                                const storyId = likeButton.dataset.storyId;
+                                const liked = likeButton.dataset.liked === 'true';
+                                const likeCount = document.getElementById(`like-count-${storyId}`);
+                                likeButton.dataset.liked = !liked;
+                                likeButton.innerHTML = liked ? '&#x2661;' : '&#x2665;';
+                                likeCount.textContent = Number(likeCount.textContent) + (liked ? -1 : 1);
+                                
+                                // Save liked status to local storage
+                                const likedStories = JSON.parse(localStorage.getItem('likedStories')) || {};
+                                likedStories[storyId] = !liked;
+                                localStorage.setItem('likedStories', JSON.stringify(likedStories));
+                            });
+                            
+                            // Update like button based on local storage
+                            const likedStories = JSON.parse(localStorage.getItem('likedStories')) || {};
+                            if (likedStories[hit.objectID]) {
+                                likeButton.dataset.liked = true;
+                                likeButton.innerHTML = '&#x2665;';
+                                const likeCount = document.getElementById(`like-count-${hit.objectID}`);
+                                likeCount.textContent = Number(likeCount.textContent) + 1;
+                            }
+                            
+                            currentStories.push(storyElement);
+                            newsFeed.appendChild(storyElement);
+                            newsFeed.appendChild(document.createElement('p'));
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching more category results:', error);
+                    });
+            }
         </script>
         <!-- Create a menu of categories for the user to select -->
         <script>
@@ -1068,20 +1190,15 @@
                 categoryButton.innerHTML = category;
                 categoryButton.className = 'align-left';
                 categoryButton.addEventListener('click', () => {
-                    // If clicked then disable news entries select
-                    newsEntriesSelect.disabled = true;
-
-                    // If clicked then disable show numbers checkbox
-                    showNumbersCheckbox.disabled = true;
-
-                    // uncheck endless scroll checkbox
-                    endlessScrollCheckbox.checked = false;
-                    // If clicked then disable endless scroll checkbox
-                    endlessScrollCheckbox.disabled = true;
-                    
                     // If the user clicks on a category Ecology
                     if (category === "&#127810;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Ecology&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Ecology';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Ecology&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1094,7 +1211,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1136,7 +1255,13 @@
 
                     // If the user clicks on a category Economy
                     if (category === "&#128176;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Economy&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Economy';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Economy&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1149,7 +1274,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1191,7 +1318,13 @@
 
                     // If the user clicks on a category History
                     if (category === "&#8987;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=History&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'History';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=History&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1204,7 +1337,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1246,7 +1381,13 @@
 
                     // If the user clicks on a category Mathematics
                     if (category === "&#960;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Math&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Math';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Math&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1259,7 +1400,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1301,7 +1444,13 @@
 
                     // If the user clicks on a category Philosophy
                     if (category === "&#x1F4AD;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Philosophy&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Philosophy';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Philosophy&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1314,7 +1463,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1356,7 +1507,13 @@
 
                     // If the user clicks on a category Physics
                     if (category === "&#9883;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Physics&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Physics';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Physics&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1369,7 +1526,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1411,7 +1570,13 @@
 
                     // If the user clicks on a category Code
                     if (category === "&#128187;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Show%20HN&tags=show_hn`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Show HN';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Show%20HN&tags=show_hn&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1424,7 +1589,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1466,7 +1633,13 @@
 
                     // If the user clicks on a category Psychology
                     if (category === "&#129504;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Psychology&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Psychology';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Psychology&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1479,7 +1652,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1521,7 +1696,13 @@
 
                     // If the user clicks on a category Science
                     if (category === "&#128300;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Science&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Science';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Science&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1534,7 +1715,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1576,7 +1759,13 @@
 
                     // If the user clicks on a category Society
                     if (category === "&#128101;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Society&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Society';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Society&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1589,7 +1778,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1631,7 +1822,13 @@
 
                     // If the user clicks on a category Technology
                     if (category === "&#9881;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Technology&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'Technology';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=Technology&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1644,7 +1841,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1686,7 +1885,13 @@
 
                     // If the user clicks on a category Videos
                     if (category === "&#9658;") {
-                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=youtube&tags=story`)
+                        // Set category state
+                        isCategoryMode = true;
+                        isSearching = false;
+                        currentCategory = 'youtube';
+                        categoryCurrentPage = 0;
+                        
+                        fetch(`https://hn.algolia.com/api/v1/search_by_date?query=youtube&tags=story&hitsPerPage=${Number(newsEntriesSelect.value)}&page=${categoryCurrentPage}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Clear the news feed before adding new stories
@@ -1699,7 +1904,9 @@
                                 categoryTitle.style.marginBottom = '40px'; // Add margin to the bottom
                                 newsFeed.appendChild(categoryTitle);
 
-                                data.hits.forEach((hit, index) => {
+                                const newsEntries = Number(newsEntriesSelect.value);
+                                const hits = data.hits.slice(0, newsEntries);
+                                hits.forEach((hit, index) => {
                                     const storyElement = document.createElement('div');
                                     storyElement.innerHTML = `
                                         <h4>${index + 1}. <img src="https://www.google.com/s2/favicons?domain=${new URL(hit.url).hostname}" alt="${new URL(hit.url).hostname} favicon">
@@ -1808,6 +2015,16 @@
         // Initialize lastIndex to 0
         let lastIndex = 0;
 
+        // Search pagination variables
+        let searchCurrentPage = 0;
+        let currentSearchTerm = '';
+        let isSearching = false;
+
+        // Category pagination variables
+        let categoryCurrentPage = 0;
+        let currentCategory = '';
+        let isCategoryMode = false;
+
         function fetchAndDisplayTopStories() {
             fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
             .then(response => response.json())
@@ -1850,7 +2067,13 @@
             if (endlessScrollCheckbox.checked) {
             window.addEventListener('scroll', () => {
                 if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 15)) { // 5 pixels threshold
-                fetchAndDisplayTopStories();
+                    if (isSearching) {
+                        loadMoreSearchResults();
+                    } else if (isCategoryMode) {
+                        loadMoreCategoryResults();
+                    } else {
+                        fetchAndDisplayTopStories();
+                    }
                 }
             });
             
