@@ -452,8 +452,9 @@
                     fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)
                         .then(response => response.json())
                         .then(data => {
-                            const { title = 'No Title', url: source = 'Unknown Source', time } = data;
+                            const { title = 'No Title', url: source = 'Unknown Source', time, score = 0, descendants = 0 } = data;
                             const date = new Date(time * 1000).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+                            const hostname = new URL(source).hostname;
                             const storyElement = document.createElement('div');
                             storyElement.style.background = 'var(--bg-card)';
                             storyElement.style.border = '1px solid var(--border-color)';
@@ -463,11 +464,22 @@
                             storyElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
                             storyElement.innerHTML = `
                                 <h4><a href="${source}" style="user-select: none;">${title}</a></h4>
-                                <p style="color: black;">Source: <a href="${source}" style="color: blue;">${source}</a></p>
+                                <p style="color: black;">Source: ${hostname}</p>
+                                <p style="color: black;">${score} points</p>
+                                <p><button class="comments-button" data-story-id="${storyId}">${descendants} comments</button></p>
                                 <p style="color: black;">${date}</p>
                                 <button onclick="removeLikedStory('${storyId}')">Remove</button>
                             `;
                             storiesSection.appendChild(storyElement);
+                            
+                            // Add event listener for comments button
+                            const commentsButton = storyElement.querySelector('.comments-button');
+                            if (commentsButton) {
+                                commentsButton.addEventListener('click', () => {
+                                    const storyId = commentsButton.dataset.storyId;
+                                    openCommentsPage(storyId, title);
+                                });
+                            }
                         })
                         .catch(error => {
                             console.error('Error fetching story details:', error);
