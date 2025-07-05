@@ -275,6 +275,12 @@
                 results.forEach((result, index) => {
                     const paperId = btoa(result.title); // Use base64 encoding of the title as a unique identifier
                     const div = document.createElement('div');
+                    div.style.background = 'var(--bg-card)';
+                    div.style.border = '1px solid var(--border-color)';
+                    div.style.borderRadius = 'var(--border-radius)';
+                    div.style.padding = 'var(--spacing-md)';
+                    div.style.marginBottom = 'var(--spacing-md)';
+                    div.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
                     div.innerHTML = `
                         <h2>${result.title}</h2>
                         <p><strong>Authors:</strong> ${result.authors.join(', ')}</p>
@@ -283,7 +289,6 @@
                         <p><strong>Date:</strong> ${result.date}</p>
                         <button id="like-button-${paperId}" class="like-button" data-paper-id="${paperId}" data-title="${result.title}" data-authors="${result.authors.join(', ')}" data-summary="${result.summary}" data-pdf="${result.pdf}" data-date="${result.date}" data-liked="false">&#x2661;</button>
                         <span class="like-count" id="like-count-${paperId}">0</span>
-                        <hr style="width: 100%">
                     `;
                     searchResults.appendChild(div);
     
@@ -441,12 +446,17 @@
                             const { title = 'No Title', url: source = 'Unknown Source', time } = data;
                             const date = new Date(time * 1000).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
                             const storyElement = document.createElement('div');
+                            storyElement.style.background = 'var(--bg-card)';
+                            storyElement.style.border = '1px solid var(--border-color)';
+                            storyElement.style.borderRadius = 'var(--border-radius)';
+                            storyElement.style.padding = 'var(--spacing-md)';
+                            storyElement.style.marginBottom = 'var(--spacing-md)';
+                            storyElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
                             storyElement.innerHTML = `
                                 <h4><a href="${source}" style="user-select: none;">${title}</a></h4>
                                 <p style="color: black;">Source: <a href="${source}" style="color: blue;">${source}</a></p>
                                 <p style="color: black;">${date}</p>
                                 <button onclick="removeLikedStory('${storyId}')">Remove</button>
-                                <hr style="background-color: white; width: 100%; height: 2px; margin-top: 20px; margin-bottom: 20px;">
                             `;
                             storiesSection.appendChild(storyElement);
                         })
@@ -495,6 +505,12 @@
                 if (likedResearchPapers[paperId]) {
                     const paper = likedResearchPapers[paperId];
                     const paperElement = document.createElement('div');
+                    paperElement.style.background = 'var(--bg-card)';
+                    paperElement.style.border = '1px solid var(--border-color)';
+                    paperElement.style.borderRadius = 'var(--border-radius)';
+                    paperElement.style.padding = 'var(--spacing-md)';
+                    paperElement.style.marginBottom = 'var(--spacing-md)';
+                    paperElement.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
                     paperElement.innerHTML = `
                         <h4><a href="${paper.pdf}" style="user-select: none;">${paper.title}</a></h4>
                         <p style="color: black;">Authors: ${paper.authors}</p>
@@ -502,7 +518,6 @@
                         <p><a href="${paper.pdf}" target="_blank">PDF</a></p>
                         <p style="color: black;">Date: ${paper.date}</p>
                         <button onclick="removeLikedResearchPaper('${paperId}')">Remove</button>
-                        <hr style="background-color: white; width: 100%; height: 2px; margin-top: 20px; margin-bottom: 20px;">
                     `;
                     researchSection.appendChild(paperElement);
                 }
