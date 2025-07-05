@@ -2702,8 +2702,50 @@
                                 element.style.boxSizing = 'border-box';
                             });
                             
+                            // Create heart button section
+                            const heartDiv = document.createElement('div');
+                            heartDiv.style.marginTop = '8px';
+                            
+                            const heartButton = document.createElement('button');
+                            heartButton.className = 'like-comment-button';
+                            heartButton.setAttribute('data-comment-id', commentId);
+                            heartButton.innerHTML = '&#x2661;';
+                            heartButton.style.marginRight = '8px';
+                            
+                            const heartCount = document.createElement('span');
+                            heartCount.id = `like-count-${commentId}`;
+                            heartCount.textContent = '0';
+                            heartCount.style.fontSize = '14px';
+                            heartCount.style.color = '#666';
+                            
+                            heartDiv.appendChild(heartButton);
+                            heartDiv.appendChild(heartCount);
+                            
+                            // Add event listener to heart button
+                            heartButton.addEventListener('click', () => {
+                                const liked = heartButton.dataset.liked === 'true';
+                                const likeCount = document.getElementById(`like-count-${commentId}`);
+                                heartButton.dataset.liked = !liked;
+                                heartButton.innerHTML = liked ? '&#x2661;' : '&#x2665;';
+                                likeCount.textContent = Number(likeCount.textContent) + (liked ? -1 : 1);
+
+                                // Save liked status to localStorage
+                                const likedComments = JSON.parse(localStorage.getItem('likedComments')) || {};
+                                likedComments[commentId] = !liked;
+                                localStorage.setItem('likedComments', JSON.stringify(likedComments));
+                            });
+
+                            // Load liked status from localStorage
+                            const likedComments = JSON.parse(localStorage.getItem('likedComments')) || {};
+                            if (likedComments[commentId]) {
+                                heartButton.dataset.liked = 'true';
+                                heartButton.innerHTML = '&#x2665;';
+                                heartCount.textContent = '1';
+                            }
+                            
                             commentDiv.appendChild(headerDiv);
                             commentDiv.appendChild(contentDiv);
+                            commentDiv.appendChild(heartDiv);
                             container.appendChild(commentDiv);
 
                             // Load child comments recursively
