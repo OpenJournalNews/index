@@ -131,6 +131,7 @@
         closeAboutButton.style.left = '30px';
         closeAboutButton.addEventListener('click', () => {
             aboutPage.style.display = 'none';
+            document.body.style.overflow = ''; // Re-enable main page scroll
             history.back(); // Go back in history when closing the about page
         });
         aboutPage.appendChild(closeAboutButton);
@@ -138,6 +139,7 @@
         const openAboutButton = document.getElementById('about-button');
         openAboutButton.addEventListener('click', () => {
             aboutPage.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Disable main page scroll
             aboutPage.innerHTML = ''; // Clear existing content to avoid duplication
     
             // Push a new state to the history stack
@@ -200,14 +202,17 @@
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page === 'about') {
                 aboutPage.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Disable main page scroll
             } else {
                 aboutPage.style.display = 'none';
+                document.body.style.overflow = ''; // Re-enable main page scroll
             }
         });
     
-        // Use forward history state to show the Hearts section
+        // Use forward history state to show the About section
         if (history.state && history.state.page === 'about') {
             aboutPage.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Disable main page scroll
         }
     </script>
     <button onclick="window.location.href='https://blogroll.org'" id="blogs-button">Blogs</button>
