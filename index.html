@@ -2489,17 +2489,38 @@
             scrollContainer.appendChild(commentsContainer);
             overlay.appendChild(scrollContainer);
 
+            // Disable main website scroll bar
+            document.body.style.overflow = 'hidden';
+
             // Add to body
             document.body.appendChild(overlay);
 
             // Add close functionality
+            const closeComments = () => {
+                // Re-enable main website scroll bar
+                document.body.style.overflow = '';
+                // Remove overlay
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
+                }
+            };
+
             document.getElementById('close-comments').addEventListener('click', () => {
-                document.body.removeChild(overlay);
+                closeComments();
                 history.back();
             });
 
-            // Update URL
-            history.pushState({}, '', `#comments-${storyId}`);
+            // Update URL and set up popstate handler
+            history.pushState({ commentsOpen: true, storyId: storyId }, '', `#comments-${storyId}`);
+            
+            // Handle browser back button
+            const handlePopState = (event) => {
+                if (!event.state || !event.state.commentsOpen) {
+                    closeComments();
+                    window.removeEventListener('popstate', handlePopState);
+                }
+            };
+            window.addEventListener('popstate', handlePopState);
 
             // Load comments
             loadCommentsForStory(storyId);
