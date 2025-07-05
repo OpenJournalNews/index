@@ -456,6 +456,7 @@
                             const date = new Date(time * 1000).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
                             const hostname = new URL(source).hostname;
                             const storyElement = document.createElement('div');
+                            storyElement.className = 'hearts-story-element';
                             storyElement.style.background = 'var(--bg-card)';
                             storyElement.style.border = '1px solid var(--border-color)';
                             storyElement.style.borderRadius = 'var(--border-radius)';
@@ -502,6 +503,7 @@
                                 .then(storyData => {
                                     const storyUrl = storyData.url || '#';
                                     const commentElement = document.createElement('div');
+                                    commentElement.className = 'hearts-comment-element';
                                     commentElement.innerHTML = `
                                         <p style="color: black;">${text}</p>
                                         <p style="color: black;">Source: <a href="${storyUrl}" target="_blank">${storyUrl.length > 30 ? storyUrl.substring(0, 30) + '...' : storyUrl}</a></p>
@@ -526,6 +528,7 @@
                 if (likedResearchPapers[paperId]) {
                     const paper = likedResearchPapers[paperId];
                     const paperElement = document.createElement('div');
+                    paperElement.className = 'hearts-paper-element';
                     paperElement.style.background = 'var(--bg-card)';
                     paperElement.style.border = '1px solid var(--border-color)';
                     paperElement.style.borderRadius = 'var(--border-radius)';
@@ -559,7 +562,15 @@
             const likedStories = JSON.parse(localStorage.getItem('likedStories')) || {};
             delete likedStories[storyId];
             localStorage.setItem('likedStories', JSON.stringify(likedStories));
-            location.reload();
+            
+            // Remove the story element from the DOM instead of reloading
+            const storyElements = document.querySelectorAll('.hearts-story-element');
+            storyElements.forEach(element => {
+                const removeButton = element.querySelector('button[onclick*="removeLikedStory"]');
+                if (removeButton && removeButton.getAttribute('onclick').includes(storyId)) {
+                    element.remove();
+                }
+            });
         }
     
         // Function to remove a liked comment
@@ -567,7 +578,15 @@
             const likedComments = JSON.parse(localStorage.getItem('likedComments')) || {};
             delete likedComments[commentId];
             localStorage.setItem('likedComments', JSON.stringify(likedComments));
-            location.reload();
+            
+            // Remove the comment element from the DOM instead of reloading
+            const commentElements = document.querySelectorAll('.hearts-comment-element');
+            commentElements.forEach(element => {
+                const removeButton = element.querySelector('button[onclick*="removeLikedComment"]');
+                if (removeButton && removeButton.getAttribute('onclick').includes(commentId)) {
+                    element.remove();
+                }
+            });
         }
     
         // Function to remove a liked research paper
@@ -575,7 +594,15 @@
             const likedResearchPapers = JSON.parse(localStorage.getItem('likedResearchPapers')) || {};
             delete likedResearchPapers[paperId];
             localStorage.setItem('likedResearchPapers', JSON.stringify(likedResearchPapers));
-            location.reload();
+            
+            // Remove the research paper element from the DOM instead of reloading
+            const paperElements = document.querySelectorAll('.hearts-paper-element');
+            paperElements.forEach(element => {
+                const removeButton = element.querySelector('button[onclick*="removeLikedResearchPaper"]');
+                if (removeButton && removeButton.getAttribute('onclick').includes(paperId)) {
+                    element.remove();
+                }
+            });
         }
     
         // Use forward history state to show the Hearts section
