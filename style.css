@@ -141,9 +141,37 @@ a:focus {
     margin: var(--spacing-lg) auto;
     width: min(65%, 800px);
     padding: var(--spacing-md);
+}
+
+/* Individual News Article Cards */
+#news-feed > div {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Comments Button Styling */
+.comments-button {
+    font-family: var(--font-primary);
+    padding: var(--spacing-xs);
+    border: 2px outset #f0f0f0;
+    background: #f0f0f0;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: var(--font-size-small);
+    border-radius: var(--border-radius);
+}
+
+.comments-button:hover {
+    background: #e0e0e0;
+    border: 2px outset #e0e0e0;
+}
+
+.comments-button:active {
+    border: 2px inset #f0f0f0;
 }
 
 #news-feed h4 {

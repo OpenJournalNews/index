@@ -967,6 +967,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -994,6 +995,13 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
 
                                     currentStories.push(storyElement);
                                     newsFeed.appendChild(storyElement);
@@ -1033,6 +1041,7 @@
                                     <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                     <p>Source: ${new URL(hit.url).hostname}</p>
                                     <p>${hit.points} points</p>
+                                    <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                     <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                     <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                     <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1062,6 +1071,13 @@
                                     const likeCount = document.getElementById(`like-count-${hit.objectID}`);
                                     likeCount.textContent = Number(likeCount.textContent) + 1;
                                 }
+
+                                // Add event listener to comments button
+                                const commentsButton = storyElement.querySelector('.comments-button');
+                                commentsButton.addEventListener('click', () => {
+                                    const storyId = commentsButton.dataset.storyId;
+                                    openCommentsPage(storyId, hit.title);
+                                });
                                 
                                 currentStories.push(storyElement);
                                 newsFeed.appendChild(storyElement);
@@ -1096,6 +1112,7 @@
                                 <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                 <p>Source: ${new URL(hit.url).hostname}</p>
                                 <p>${hit.points} points</p>
+                                <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                 <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                 <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                 <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1125,6 +1142,13 @@
                                 const likeCount = document.getElementById(`like-count-${hit.objectID}`);
                                 likeCount.textContent = Number(likeCount.textContent) + 1;
                             }
+
+                            // Add event listener to comments button
+                            const commentsButton = storyElement.querySelector('.comments-button');
+                            commentsButton.addEventListener('click', () => {
+                                const storyId = commentsButton.dataset.storyId;
+                                openCommentsPage(storyId, hit.title);
+                            });
                             
                             currentStories.push(storyElement);
                             newsFeed.appendChild(storyElement);
@@ -1220,6 +1244,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1247,6 +1272,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1283,6 +1316,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1310,6 +1344,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1346,6 +1388,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1373,6 +1416,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1409,6 +1460,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1436,6 +1488,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1472,6 +1532,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1499,6 +1560,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1535,6 +1604,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1562,6 +1632,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1598,6 +1676,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1625,6 +1704,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1661,6 +1748,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1688,6 +1776,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1724,6 +1820,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1751,6 +1848,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1787,6 +1892,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1814,6 +1920,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1850,6 +1964,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1877,6 +1992,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1913,6 +2036,7 @@
                                         <a href="${hit.url}" style="user-select: none;">${hit.title}</a></h4>
                                         <p>Source: ${new URL(hit.url).hostname}</p>
                                         <p>${hit.points} points</p>
+                                        <p><button class="comments-button" data-story-id="${hit.objectID}">${hit.num_comments || 0} comments</button></p>
                                         <p>${new Date(hit.created_at_i * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                                         <button class="like-button" data-story-id="${hit.objectID}" data-liked="false">&#x2661;</button>
                                         <span class="like-count" id="like-count-${hit.objectID}">0</span>
@@ -1940,6 +2064,14 @@
                                         likeButton.dataset.liked = 'true';
                                         likeButton.innerHTML = '&#x2665;';
                                     }
+
+                                    // Add event listener to comments button
+                                    const commentsButton = storyElement.querySelector('.comments-button');
+                                    commentsButton.addEventListener('click', () => {
+                                        const storyId = commentsButton.dataset.storyId;
+                                        openCommentsPage(storyId, hit.title);
+                                    });
+
                                     newsFeed.appendChild(storyElement);
                                     newsFeed.appendChild(document.createElement('p')); // Adds spacing
                                 });
@@ -1976,6 +2108,7 @@
                         <a href="${story.url}" style="user-select: none;">${story.title}</a></h4>
                         <p>Source: ${new URL(story.url).hostname}</p>
                         <p>${story.score} points</p>
+                        <p><button class="comments-button" data-story-id="${story.id}">${story.descendants || 0} comments</button></p>
                         <p>${new Date(story.time * 1000).toLocaleString('en-GB', { hour12: false, hourCycle: 'h23' })}</p>
                         <button class="like-button" data-story-id="${story.id}" data-liked="false">&#x2661;</button>
                         <span class="like-count" id="like-count-${story.id}">0</span>
@@ -2008,6 +2141,13 @@
                     const likeCount = document.getElementById(`like-count-${story.id}`);
                     likeCount.textContent = Number(likeCount.textContent) + 1;
                 }
+
+                // Add event listener to comments button
+                const commentsButton = storyElement.querySelector('.comments-button');
+                commentsButton.addEventListener('click', () => {
+                    const storyId = commentsButton.dataset.storyId;
+                    openCommentsPage(storyId, story.title);
+                });
                 });
             });
         }
@@ -2258,6 +2398,120 @@
         navigationMenu.appendChild(topButton);
         navigationMenu.appendChild(bottomButton);
         document.body.appendChild(navigationMenu);
+
+        // Function to open individual comments page
+        function openCommentsPage(storyId, storyTitle) {
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'comments-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'white';
+            overlay.style.zIndex = '9999';
+            overlay.style.display = 'flex';
+            overlay.style.flexDirection = 'column';
+
+            // Create header
+            const header = document.createElement('div');
+            header.style.padding = '20px';
+            header.style.borderBottom = '1px solid #ccc';
+            header.style.backgroundColor = '#f9f9f9';
+            header.style.flexShrink = '0';
+            header.innerHTML = `
+                <h2 style="margin: 0; padding-right: 40px; font-size: 18px; line-height: 1.4;">${storyTitle}</h2>
+                <button id="close-comments" style="position: absolute; top: 15px; right: 15px; font-size: 24px; border: none; background: none; cursor: pointer; padding: 5px;">×</button>
+            `;
+            overlay.appendChild(header);
+
+            // Create scrollable comments container
+            const scrollContainer = document.createElement('div');
+            scrollContainer.style.flex = '1';
+            scrollContainer.style.overflow = 'auto';
+            scrollContainer.style.padding = '20px';
+            scrollContainer.style.maxHeight = 'calc(100vh - 100px)';
+            
+            const commentsContainer = document.createElement('div');
+            commentsContainer.id = 'comments-container';
+            commentsContainer.style.maxWidth = '800px';
+            commentsContainer.style.margin = '0 auto';
+            
+            scrollContainer.appendChild(commentsContainer);
+            overlay.appendChild(scrollContainer);
+
+            // Add to body
+            document.body.appendChild(overlay);
+
+            // Add close functionality
+            document.getElementById('close-comments').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+                history.back();
+            });
+
+            // Update URL
+            history.pushState({}, '', `#comments-${storyId}`);
+
+            // Load comments
+            loadCommentsForStory(storyId);
+        }
+
+        // Function to load comments for a specific story
+        function loadCommentsForStory(storyId) {
+            const container = document.getElementById('comments-container');
+            container.innerHTML = '<p>Loading comments...</p>';
+
+            fetch(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)
+                .then(response => response.json())
+                .then(story => {
+                    if (story.kids && story.kids.length > 0) {
+                        container.innerHTML = '';
+                        loadCommentsRecursively(story.kids, container, 0);
+                    } else {
+                        container.innerHTML = '<p>No comments available.</p>';
+                    }
+                })
+                .catch(error => {
+                    container.innerHTML = '<p>Error loading comments.</p>';
+                });
+        }
+
+        // Function to load comments recursively (hierarchical)
+        function loadCommentsRecursively(commentIds, container, level) {
+            commentIds.forEach(commentId => {
+                fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json`)
+                    .then(response => response.json())
+                    .then(comment => {
+                        if (comment && comment.text) {
+                            const commentDiv = document.createElement('div');
+                            commentDiv.style.marginLeft = `${level * 20}px`;
+                            commentDiv.style.marginBottom = '10px';
+                            commentDiv.style.padding = '10px';
+                            commentDiv.style.border = '1px solid #ccc';
+                            commentDiv.style.borderRadius = '3px';
+                            commentDiv.style.backgroundColor = level % 2 === 0 ? '#f9f9f9' : '#ffffff';
+                            
+                            commentDiv.innerHTML = `
+                                <div style="font-weight: bold; margin-bottom: 5px;">
+                                    ${comment.by} - ${new Date(comment.time * 1000).toLocaleString()}
+                                </div>
+                                <div>${comment.text}</div>
+                            `;
+                            
+                            container.appendChild(commentDiv);
+
+                            // Load child comments recursively
+                            if (comment.kids && comment.kids.length > 0) {
+                                loadCommentsRecursively(comment.kids, container, level + 1);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading comment:', error);
+                    });
+            });
+        }
     </script>
 </body>
 <footer>
