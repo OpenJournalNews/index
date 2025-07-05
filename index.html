@@ -235,6 +235,8 @@
         closeResearchButton.style.top = '10px';
         closeResearchButton.style.left = '30px';
         closeResearchButton.addEventListener('click', () => {
+            // Re-enable main website scroll bar
+            document.body.style.overflow = '';
             researchPage.style.display = 'none';
             history.back(); // Go back in history when closing the research page
         });
@@ -243,6 +245,9 @@
         const openResearchButton = document.getElementById('research-button');
     
         openResearchButton.addEventListener('click', () => {
+            // Disable main website scroll bar
+            document.body.style.overflow = 'hidden';
+            
             researchPage.style.display = 'block';
             researchPage.innerHTML = ''; // Clear existing content to avoid duplication
             researchPage.appendChild(closeResearchButton);
@@ -351,8 +356,12 @@
         // Handle the popstate event to manage back/forward navigation
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page === 'research') {
+                // Disable main website scroll bar
+                document.body.style.overflow = 'hidden';
                 researchPage.style.display = 'block';
             } else {
+                // Re-enable main website scroll bar
+                document.body.style.overflow = '';
                 researchPage.style.display = 'none';
             }
         });
@@ -608,11 +617,16 @@
                 const showNumbersCheckbox = document.getElementById('show-numbers');
                 const showNumbers = showNumbersCheckbox.checked;
         
+                // Disable main website scroll bar
+                document.body.style.overflow = 'hidden';
+                
                 commentsSection.style.display = 'flex';
                 commentsScrollContainer.innerHTML = ''; // Clear existing content to avoid duplication
                 
                 // Add close button event listener
                 document.getElementById('close-comments-main').addEventListener('click', () => {
+                    // Re-enable main website scroll bar
+                    document.body.style.overflow = '';
                     commentsSection.style.display = 'none';
                     history.back(); // Navigate back in history
                 });
@@ -758,8 +772,12 @@
             // Listen for the popstate event to handle back navigation
             window.addEventListener('popstate', (event) => {
                 if (event.state && event.state.commentsOpen) {
+                    // Disable main website scroll bar
+                    document.body.style.overflow = 'hidden';
                     commentsSection.style.display = 'block';
                 } else {
+                    // Re-enable main website scroll bar
+                    document.body.style.overflow = '';
                     commentsSection.style.display = 'none';
                 }
             });
