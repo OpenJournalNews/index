@@ -640,6 +640,8 @@
                                         ${showNumbers ? `<p>${index + 1}. </p>` : ''}
                                         <h4><a href="${source}" style="user-select: none;">${title}</a></h4>
                                         <p style="color: black;">Source: <a href="${source}" style="color: blue;">${sourceDomain}</a></p>
+                                        <p style="color: black;">${story.score || 0} points</p>
+                                        <p style="color: black;">${kids.length} comments</p>
                                         <p style="color: black;">${date}</p>
                                         <button class="load-comments-button" data-story-id="${story.id}" style="margin-bottom: 10px;">Load Comments</button>
                                         <div class="comments-container" id="comments-${story.id}" style="display: none; margin-left: 20px; max-height: 400px; overflow-y: auto; word-wrap: break-word; overflow-wrap: break-word; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;"></div>
