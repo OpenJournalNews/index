@@ -558,21 +558,31 @@
             commentsSection.style.height = '100%';
             commentsSection.style.backgroundColor = 'white';
             commentsSection.style.zIndex = '9999';
-            commentsSection.style.overflow = 'auto';
-            commentsSection.style.padding = '40px';
+            commentsSection.style.flexDirection = 'column';
             commentsSection.style.boxSizing = 'border-box';
             document.body.appendChild(commentsSection);
             
-            const closeCommentsButton = document.createElement('button');
-            closeCommentsButton.innerHTML = 'Close';
-            closeCommentsButton.style.position = 'fixed';
-            closeCommentsButton.style.top = '10px';
-            closeCommentsButton.style.left = '40px';
-            closeCommentsButton.addEventListener('click', () => {
-                commentsSection.style.display = 'none';
-                history.back(); // Navigate back in history
-            });
-            commentsSection.appendChild(closeCommentsButton);
+            // Create header for comments section
+            const commentsHeader = document.createElement('div');
+            commentsHeader.style.padding = '20px';
+            commentsHeader.style.borderBottom = '1px solid #ccc';
+            commentsHeader.style.backgroundColor = '#f9f9f9';
+            commentsHeader.style.flexShrink = '0';
+            commentsHeader.innerHTML = `
+                <h2 style="margin: 0; padding-right: 40px; font-size: 18px; line-height: 1.4;">Comments</h2>
+                <button id="close-comments-main" style="position: absolute; top: 15px; right: 15px; font-size: 24px; border: none; background: none; cursor: pointer; padding: 5px;">×</button>
+            `;
+            commentsSection.appendChild(commentsHeader);
+
+            // Create scrollable container for comments content
+            const commentsScrollContainer = document.createElement('div');
+            commentsScrollContainer.style.flex = '1';
+            commentsScrollContainer.style.overflow = 'auto';
+            commentsScrollContainer.style.padding = '20px';
+            commentsScrollContainer.style.maxHeight = 'calc(100vh - 100px)';
+            commentsScrollContainer.style.wordWrap = 'break-word';
+            commentsScrollContainer.style.overflowWrap = 'break-word';
+            commentsSection.appendChild(commentsScrollContainer);
             
             const openCommentsButton = document.getElementById('comments-button');
             
@@ -582,9 +592,14 @@
                 const showNumbersCheckbox = document.getElementById('show-numbers');
                 const showNumbers = showNumbersCheckbox.checked;
         
-                commentsSection.style.display = 'block';
-                commentsSection.innerHTML = ''; // Clear existing content to avoid duplication
-                commentsSection.appendChild(closeCommentsButton);
+                commentsSection.style.display = 'flex';
+                commentsScrollContainer.innerHTML = ''; // Clear existing content to avoid duplication
+                
+                // Add close button event listener
+                document.getElementById('close-comments-main').addEventListener('click', () => {
+                    commentsSection.style.display = 'none';
+                    history.back(); // Navigate back in history
+                });
                 
                 // Push a new state to the history stack
                 history.pushState({ commentsOpen: true }, 'Comments', '#comments');
@@ -605,7 +620,9 @@
                                 newsGrid.style.display = 'grid';
                                 newsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
                                 newsGrid.style.gap = '20px';
-                                commentsSection.appendChild(newsGrid);
+                                newsGrid.style.maxWidth = '1200px';
+                                newsGrid.style.margin = '0 auto';
+                                commentsScrollContainer.appendChild(newsGrid);
         
                                 stories.forEach((story, index) => {
                                     const { title = 'No Title', url: source = 'Unknown Source', time, kids = [] } = story;
@@ -614,6 +631,10 @@
                                     storyElement.style.border = '1px solid #ccc';
                                     storyElement.style.padding = '20px';
                                     storyElement.style.backgroundColor = '#f9f9f9';
+                                    storyElement.style.borderRadius = '4px';
+                                    storyElement.style.wordWrap = 'break-word';
+                                    storyElement.style.overflowWrap = 'break-word';
+                                    storyElement.style.boxSizing = 'border-box';
                                     const sourceDomain = source !== 'Unknown Source' ? new URL(source).hostname : source;
                                     storyElement.innerHTML = `
                                         ${showNumbers ? `<p>${index + 1}. </p>` : ''}
@@ -621,7 +642,7 @@
                                         <p style="color: black;">Source: <a href="${source}" style="color: blue;">${sourceDomain}</a></p>
                                         <p style="color: black;">${date}</p>
                                         <button class="load-comments-button" data-story-id="${story.id}" style="margin-bottom: 10px;">Load Comments</button>
-                                        <div class="comments-container" id="comments-${story.id}" style="display: none; margin-left: 20px;"></div>
+                                        <div class="comments-container" id="comments-${story.id}" style="display: none; margin-left: 20px; max-height: 400px; overflow-y: auto; word-wrap: break-word; overflow-wrap: break-word; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;"></div>
                                     `;
                                     newsGrid.appendChild(storyElement); // Append stories to the news grid
                                 });
@@ -669,8 +690,12 @@
                                         commentElement.style.backgroundColor = 'lightgrey';
                                         commentElement.style.padding = '10px';
                                         commentElement.style.marginBottom = '10px';
+                                        commentElement.style.borderRadius = '4px';
+                                        commentElement.style.wordWrap = 'break-word';
+                                        commentElement.style.overflowWrap = 'break-word';
+                                        commentElement.style.boxSizing = 'border-box';
                                         commentElement.innerHTML = `
-                                            <p style="color: black;">${comment.text}</p>
+                                            <p style="color: black; word-wrap: break-word; overflow-wrap: break-word; margin: 0 0 10px 0;">${comment.text}</p>
                                             <button class="like-comment-button" data-comment-id="${comment.id}" style="margin-top: 10px;">&#x2661;</button>
                                             <span id="like-count-${comment.id}">0</span>
                                             <p style="color: orange; background-color: black;">By: ${comment.by} on ${commentDate}</p>
@@ -2432,11 +2457,16 @@
             scrollContainer.style.overflow = 'auto';
             scrollContainer.style.padding = '20px';
             scrollContainer.style.maxHeight = 'calc(100vh - 100px)';
+            scrollContainer.style.wordWrap = 'break-word';
+            scrollContainer.style.overflowWrap = 'break-word';
             
             const commentsContainer = document.createElement('div');
             commentsContainer.id = 'comments-container';
             commentsContainer.style.maxWidth = '800px';
             commentsContainer.style.margin = '0 auto';
+            commentsContainer.style.wordWrap = 'break-word';
+            commentsContainer.style.overflowWrap = 'break-word';
+            commentsContainer.style.boxSizing = 'border-box';
             
             scrollContainer.appendChild(commentsContainer);
             overlay.appendChild(scrollContainer);
@@ -2491,14 +2521,64 @@
                             commentDiv.style.border = '1px solid #ccc';
                             commentDiv.style.borderRadius = '3px';
                             commentDiv.style.backgroundColor = level % 2 === 0 ? '#f9f9f9' : '#ffffff';
+                            commentDiv.style.wordWrap = 'break-word';
+                            commentDiv.style.overflowWrap = 'break-word';
+                            commentDiv.style.maxWidth = '100%';
+                            commentDiv.style.boxSizing = 'border-box';
                             
-                            commentDiv.innerHTML = `
-                                <div style="font-weight: bold; margin-bottom: 5px;">
-                                    ${comment.by} - ${new Date(comment.time * 1000).toLocaleString()}
-                                </div>
-                                <div>${comment.text}</div>
-                            `;
+                            // Create header
+                            const headerDiv = document.createElement('div');
+                            headerDiv.style.fontWeight = 'bold';
+                            headerDiv.style.marginBottom = '5px';
+                            headerDiv.style.fontSize = '14px';
+                            headerDiv.style.color = '#333';
+                            headerDiv.textContent = `${comment.by} - ${new Date(comment.time * 1000).toLocaleString()}`;
                             
+                            // Create content div with proper text wrapping
+                            const contentDiv = document.createElement('div');
+                            contentDiv.style.fontSize = '14px';
+                            contentDiv.style.lineHeight = '1.5';
+                            contentDiv.style.color = '#444';
+                            contentDiv.style.wordWrap = 'break-word';
+                            contentDiv.style.overflowWrap = 'break-word';
+                            contentDiv.style.whiteSpace = 'pre-wrap';
+                            contentDiv.style.maxWidth = '100%';
+                            contentDiv.innerHTML = comment.text;
+                            
+                            // Fix all links in the content to not overflow
+                            const links = contentDiv.querySelectorAll('a');
+                            links.forEach(link => {
+                                link.style.wordBreak = 'break-all';
+                                link.style.color = '#0000ff';
+                                link.style.textDecoration = 'underline';
+                                link.style.maxWidth = '100%';
+                                link.style.display = 'inline-block';
+                                link.style.overflowWrap = 'break-word';
+                            });
+                            
+                            // Fix code blocks and pre elements
+                            const codeElements = contentDiv.querySelectorAll('code, pre');
+                            codeElements.forEach(code => {
+                                code.style.whiteSpace = 'pre-wrap';
+                                code.style.wordWrap = 'break-word';
+                                code.style.overflowWrap = 'break-word';
+                                code.style.maxWidth = '100%';
+                                code.style.overflow = 'hidden';
+                                code.style.fontSize = '13px';
+                                code.style.backgroundColor = '#f0f0f0';
+                                code.style.padding = '2px 4px';
+                                code.style.borderRadius = '2px';
+                            });
+                            
+                            // Fix any other potential overflow elements
+                            const allElements = contentDiv.querySelectorAll('*');
+                            allElements.forEach(element => {
+                                element.style.maxWidth = '100%';
+                                element.style.boxSizing = 'border-box';
+                            });
+                            
+                            commentDiv.appendChild(headerDiv);
+                            commentDiv.appendChild(contentDiv);
                             container.appendChild(commentDiv);
 
                             // Load child comments recursively
