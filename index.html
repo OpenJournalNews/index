@@ -295,7 +295,7 @@
                         <h2>${result.title}</h2>
                         <p><strong>Authors:</strong> ${result.authors.join(', ')}</p>
                         <p>${result.summary}</p>
-                        <p><a href="${result.pdf}" target="_blank">PDF</a></p>
+                        <p><a href="${result.pdf}" target="_blank" rel="noopener" class="pdf-link">PDF</a></p>
                         <p><strong>Date:</strong> ${result.date}</p>
                         <button id="like-button-${paperId}" class="like-button" data-paper-id="${paperId}" data-title="${result.title}" data-authors="${result.authors.join(', ')}" data-summary="${result.summary}" data-pdf="${result.pdf}" data-date="${result.date}" data-liked="false">&#x2661;</button>
                         <span class="like-count" id="like-count-${paperId}">0</span>
@@ -368,6 +368,10 @@
                             pdf = `https://arxiv.org/pdf/${rawId}.pdf`;
                         }
                     }
+                }
+                // Some older entries might still miss scheme – enforce https if looks like arxiv id
+                if (pdf && pdf.startsWith('//')) {
+                    pdf = 'https:' + pdf;
                 }
                 const date = new Date(entry.querySelector('published').textContent).toLocaleString('en-UK', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).replace(',', '');
                 results.push({ title, authors, summary, pdf, date });
