@@ -352,7 +352,23 @@
                 const authors = Array.from(entry.querySelectorAll('author')).map(author => author.querySelector('name').textContent);
                 const summary = entry.querySelector('summary').textContent;
                 const pdfLink = entry.querySelector('link[type="application/pdf"]');
-                const pdf = pdfLink ? pdfLink.getAttribute('href') : '';
+                // Normalize PDF URL for mobile (avoid http cleartext) and add fallback
+                let pdf = '';
+                if (pdfLink) {
+                    pdf = pdfLink.getAttribute('href') || '';
+                }
+                if (pdf.startsWith('http://')) {
+                    pdf = pdf.replace('http://', 'https://');
+                }
+                if (!pdf) {
+                    const idTag = entry.querySelector('id');
+                    if (idTag) {
+                        const rawId = idTag.textContent.trim().split('/abs/').pop();
+                        if (rawId) {
+                            pdf = `https://arxiv.org/pdf/${rawId}.pdf`;
+                        }
+                    }
+                }
                 const date = new Date(entry.querySelector('published').textContent).toLocaleString('en-UK', { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).replace(',', '');
                 results.push({ title, authors, summary, pdf, date });
             });
