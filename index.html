@@ -107,195 +107,135 @@
     </script>
     
     <script>
-        // Global PDF overlay function for both Research and Hearts pages
+        // Simple and reliable PDF overlay function
         const ensurePdfOverlay = () => {
             if (document.getElementById('pdf-overlay')) return;
+            
             const overlay = document.createElement('div');
             overlay.id = 'pdf-overlay';
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.background = 'rgba(0,0,0,0.35)';
-            overlay.style.zIndex = '10000';
-            overlay.style.display = 'none';
-            overlay.style.padding = '12px';
-            overlay.style.boxSizing = 'border-box';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                z-index: 10000;
+                display: none;
+                padding: 20px;
+                box-sizing: border-box;
+            `;
+            
             overlay.innerHTML = `
-               <div id="pdf-frame-wrapper" style="background:#fce5b1;position:relative;width:100%;height:100%;box-shadow:0 0 8px rgba(0,0,0,0.3);border:1px solid #bfa271;border-radius:4px;display:flex;flex-direction:column;">
-                  <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#d4bea0;border-bottom:1px solid #bfa271;">
-                     <span id="pdf-filename" style="font-size:14px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:bold;"></span>
-                     <div style="display:flex;gap:8px;">
-                       <a id="pdf-open-new-tab" href="#" target="_blank" 
-                          style="font-size:12px;padding:6px 10px;background:#0066cc;color:white;text-decoration:none;border-radius:3px;display:inline-block;">
-                          📱 Open
-                       </a>
-                       <button id="pdf-close" 
-                               style="font-size:12px;padding:6px 10px;background:#dc3545;color:white;border:none;border-radius:3px;cursor:pointer;">
-                         ✕ Close
-                       </button>
-                     </div>
-                  </div>
-                  <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;border:0;background:#fff;" title="PDF Viewer"></iframe>
-                  <div id="pdf-loading" style="display:none;padding:30px;text-align:center;font-size:16px;background:#f8f9fa;">
-                     <div style="margin-bottom:15px;">📄</div>
-                     <p>Loading PDF...</p>
-                     <div style="font-size:12px;color:#666;margin-top:10px;">This may take a moment</div>
-                  </div>
-                  <div id="pdf-fallback" style="display:none;padding:20px;font-size:14px;text-align:center;background:#f8f9fa;">
-                     <p>PDF viewer not available. You can:</p>
-                     <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener" style="color:#0066cc;text-decoration:underline;">Open PDF in new tab</a></p>
-                     <p style="margin-top:10px;font-size:12px;color:#666;">Some browsers block inline PDF viewing for security reasons.</p>
-                  </div>
-               </div>`;
+                <div style="background: #fce5b1; border-radius: 8px; width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden;">
+                    <div style="padding: 15px; background: #d4bea0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #bfa271;">
+                        <span id="pdf-title" style="font-weight: bold; font-size: 16px;"></span>
+                        <button id="pdf-close-btn" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">✕ Close</button>
+                    </div>
+                    <div id="pdf-content" style="flex: 1; padding: 20px; text-align: center; overflow: auto;">
+                        <div id="pdf-options">
+                            <h3 style="margin-bottom: 20px;">PDF Viewer Options</h3>
+                            <p style="margin-bottom: 20px; color: #666;">Choose how you'd like to view this PDF:</p>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <a id="pdf-open-browser" href="#" target="_blank" rel="noopener"
+                                   style="display: inline-block; background: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px;">
+                                   🌐 Open in New Tab
+                                </a>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <a id="pdf-download" href="#" download
+                                   style="display: inline-block; background: #28a745; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px;">
+                                   💾 Download PDF
+                                </a>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <button id="pdf-try-embed" 
+                                        style="display: inline-block; background: #6f42c1; color: white; padding: 12px 20px; border: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px; cursor: pointer;">
+                                   📄 Try Inline Viewer
+                                </button>
+                            </div>
+                            
+                            <p style="font-size: 14px; color: #666; margin-top: 20px;">
+                                Note: Some browsers may block inline PDF viewing for security reasons.
+                            </p>
+                        </div>
+                        
+                        <div id="pdf-viewer" style="display: none; width: 100%; height: 100%;">
+                            <iframe id="pdf-iframe" style="width: 100%; height: 500px; border: none; background: white; border-radius: 4px;"></iframe>
+                            <div style="margin-top: 10px;">
+                                <button id="pdf-back-to-options" style="background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
+                                    ← Back to Options
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
             document.body.appendChild(overlay);
-            const closeBtn = overlay.querySelector('#pdf-close');
-            closeBtn.addEventListener('click', () => {
+            
+            // Close button functionality
+            overlay.querySelector('#pdf-close-btn').addEventListener('click', () => {
                 overlay.style.display = 'none';
                 document.body.style.overflow = '';
-                const iframe = overlay.querySelector('#pdf-iframe');
-                iframe.src = 'about:blank';
             });
             
-            // Add touch/click outside to close on mobile
+            // Click outside to close
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
                     overlay.style.display = 'none';
                     document.body.style.overflow = '';
-                    const iframe = overlay.querySelector('#pdf-iframe');
-                    iframe.src = 'about:blank';
                 }
-            });
-            
-            // Prevent closing when clicking inside the PDF wrapper
-            const pdfWrapper = overlay.querySelector('#pdf-frame-wrapper');
-            pdfWrapper.addEventListener('click', (e) => {
-                e.stopPropagation();
             });
         };
 
-        // Enhanced PDF loading function with Android-specific fallbacks
-        const loadPdfInOverlay = (pdfUrl) => {
+        // Simple PDF loading function
+        const openPdfViewer = (pdfUrl) => {
+            ensurePdfOverlay();
             const overlay = document.getElementById('pdf-overlay');
+            const title = overlay.querySelector('#pdf-title');
+            const openBrowser = overlay.querySelector('#pdf-open-browser');
+            const download = overlay.querySelector('#pdf-download');
+            const tryEmbed = overlay.querySelector('#pdf-try-embed');
+            const pdfOptions = overlay.querySelector('#pdf-options');
+            const pdfViewer = overlay.querySelector('#pdf-viewer');
             const iframe = overlay.querySelector('#pdf-iframe');
-            const fileNameSpan = overlay.querySelector('#pdf-filename');
-            const openTab = overlay.querySelector('#pdf-open-new-tab');
-            const fallbackLink = overlay.querySelector('#pdf-direct-link');
-            const fallbackDiv = overlay.querySelector('#pdf-fallback');
-            const loadingDiv = overlay.querySelector('#pdf-loading');
+            const backBtn = overlay.querySelector('#pdf-back-to-options');
             
-            // Reset states
-            fallbackDiv.style.display = 'none';
-            loadingDiv.style.display = 'block';
-            iframe.style.display = 'block';
-            
-            // Set up URLs and filename
+            // Clean up URL
             const cleanUrl = pdfUrl.replace('http://', 'https://');
-            fileNameSpan.textContent = cleanUrl.split('/').pop();
-            openTab.href = cleanUrl;
-            fallbackLink.href = cleanUrl;
+            
+            // Set up elements
+            title.textContent = cleanUrl.split('/').pop();
+            openBrowser.href = cleanUrl;
+            download.href = cleanUrl;
+            
+            // Show options, hide viewer
+            pdfOptions.style.display = 'block';
+            pdfViewer.style.display = 'none';
+            
+            // Try embed button
+            tryEmbed.onclick = () => {
+                pdfOptions.style.display = 'none';
+                pdfViewer.style.display = 'block';
+                iframe.src = cleanUrl;
+            };
+            
+            // Back to options button
+            backBtn.onclick = () => {
+                pdfViewer.style.display = 'none';
+                pdfOptions.style.display = 'block';
+                iframe.src = 'about:blank';
+            };
             
             // Show overlay
             document.body.style.overflow = 'hidden';
             overlay.style.display = 'block';
-            
-            // Detect Android and mobile browsers
-            const isAndroid = /Android/i.test(navigator.userAgent);
-            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const isWebView = window.navigator.userAgent.includes('wv') || window.navigator.userAgent.includes('Version') && window.navigator.userAgent.includes('Chrome');
-            
-            // For Android/mobile, use different strategy
-            if (isAndroid || isMobile) {
-                // Android browsers often block iframe PDF embedding entirely
-                // Show improved fallback immediately with multiple options
-                loadingDiv.style.display = 'none';
-                iframe.style.display = 'none';
-                
-                // Update fallback content for mobile
-                fallbackDiv.innerHTML = `
-                    <p style="margin-bottom:15px;"><strong>PDF Viewer</strong></p>
-                    <p style="margin-bottom:15px;">Mobile browsers often restrict inline PDF viewing. Choose an option:</p>
-                    <div style="margin-bottom:15px;">
-                        <a href="${cleanUrl}" target="_blank" rel="noopener" 
-                           style="display:inline-block;background:#0066cc;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
-                           📱 Open in Browser
-                        </a>
-                    </div>
-                    <div style="margin-bottom:15px;">
-                        <a href="${cleanUrl}" download 
-                           style="display:inline-block;background:#28a745;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
-                           💾 Download PDF
-                        </a>
-                    </div>
-                    <div style="margin-bottom:15px;">
-                        <a href="https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(cleanUrl)}" target="_blank" 
-                           style="display:inline-block;background:#ea4335;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
-                           📄 Google Viewer
-                        </a>
-                    </div>
-                    <p style="font-size:12px;color:#666;margin-top:15px;">
-                        Tip: For best results on mobile, use "Open in Browser" or download the PDF.
-                    </p>
-                `;
-                fallbackDiv.style.display = 'block';
-                return;
-            }
-            
-            // For desktop browsers, try the original multi-attempt approach
-            let loadAttempts = 0;
-            const maxAttempts = 3;
-            
-            const tryLoadPdf = () => {
-                loadAttempts++;
-                
-                if (loadAttempts === 1) {
-                    // First attempt: Try direct PDF URL
-                    iframe.src = cleanUrl;
-                } else if (loadAttempts === 2) {
-                    // Second attempt: Try with PDF.js viewer (Mozilla's)
-                    iframe.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(cleanUrl)}`;
-                } else if (loadAttempts === 3) {
-                    // Third attempt: Try Google Docs viewer
-                    iframe.src = `https://docs.google.com/gview?url=${encodeURIComponent(cleanUrl)}&embedded=true`;
-                }
-                
-                // Set timeout to detect if PDF doesn't load
-                const loadTimeout = setTimeout(() => {
-                    if (loadAttempts < maxAttempts) {
-                        tryLoadPdf();
-                    } else {
-                        // All attempts failed, show fallback
-                        loadingDiv.style.display = 'none';
-                        iframe.style.display = 'none';
-                        fallbackDiv.innerHTML = `
-                            <p style="margin-bottom:15px;">Unable to display PDF inline.</p>
-                            <div style="margin-bottom:15px;">
-                                <a href="${cleanUrl}" target="_blank" rel="noopener"
-                                   style="display:inline-block;background:#0066cc;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
-                                   🔗 Open PDF in New Tab
-                                </a>
-                            </div>
-                            <p style="font-size:12px;color:#666;">
-                                Your browser may have restrictions on displaying external PDFs.
-                            </p>
-                        `;
-                        fallbackDiv.style.display = 'block';
-                    }
-                }, 4000); // 4 second timeout
-                
-                // Listen for successful load
-                const onLoad = () => {
-                    clearTimeout(loadTimeout);
-                    loadingDiv.style.display = 'none';
-                    iframe.removeEventListener('load', onLoad);
-                };
-                
-                iframe.addEventListener('load', onLoad);
-            };
-            
-            tryLoadPdf();
         };
+    </script>
     </script>
     
     <button id="current-time"></button>
@@ -501,7 +441,7 @@
                         e.preventDefault();
                         const pdfUrlRaw = pdfLink.getAttribute('href');
                         if (!pdfUrlRaw) return;
-                        loadPdfInOverlay(pdfUrlRaw);
+                        openPdfViewer(pdfUrlRaw);
                     });
     
                     // Add event listener to like button
@@ -539,8 +479,7 @@
                     }
                 });
 
-                // Enable PDF overlay viewer for all devices
-                ensurePdfOverlay();
+                // PDF overlay is created automatically when needed
             });
         });
     
@@ -649,9 +588,6 @@
     
         const openButton = document.getElementById('hearts-button');
         openButton.addEventListener('click', () => {
-            // Ensure PDF overlay is available for Hearts page
-            ensurePdfOverlay();
-            
             likedStoriesPage.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Disable main page scroll
             likedStoriesPage.innerHTML = ''; // Clear existing content to avoid duplication
@@ -805,7 +741,7 @@
                         e.preventDefault();
                         const pdfUrlRaw = pdfLink.getAttribute('href');
                         if (!pdfUrlRaw) return;
-                        loadPdfInOverlay(pdfUrlRaw);
+                        openPdfViewer(pdfUrlRaw);
                     });
                     }
                 });
