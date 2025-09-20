@@ -130,7 +130,7 @@
                 <div style="background: #fce5b1; border-radius: 8px; width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden;">
                     <div style="padding: 15px; background: #d4bea0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #bfa271;">
                         <span id="pdf-title" style="font-weight: bold; font-size: 16px;"></span>
-                        <button id="pdf-close-btn" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">✕ Close</button>
+                        <button id="pdf-close-btn" style="font-family: Arial, sans-serif; padding: 4px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px;">✕ Close</button>
                     </div>
                     <div id="pdf-content" style="flex: 1; padding: 20px; text-align: center; overflow: auto;">
                         <div id="pdf-options">
@@ -138,22 +138,22 @@
                             <p style="margin-bottom: 20px; color: #666;">Choose how you'd like to view this PDF:</p>
                             
                             <div style="margin-bottom: 15px;">
-                                <a id="pdf-open-browser" href="#" target="_blank" rel="noopener"
-                                   style="display: inline-block; background: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px;">
+                                <button id="pdf-open-browser" 
+                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
                                    🌐 Open in New Tab
-                                </a>
+                                </button>
                             </div>
                             
                             <div style="margin-bottom: 15px;">
-                                <a id="pdf-download" href="#" download
-                                   style="display: inline-block; background: #28a745; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px;">
+                                <button id="pdf-download" 
+                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
                                    💾 Download PDF
-                                </a>
+                                </button>
                             </div>
                             
                             <div style="margin-bottom: 15px;">
                                 <button id="pdf-try-embed" 
-                                        style="display: inline-block; background: #6f42c1; color: white; padding: 12px 20px; border: none; border-radius: 6px; margin: 5px; font-size: 16px; min-width: 200px; cursor: pointer;">
+                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
                                    📄 Try Inline Viewer
                                 </button>
                             </div>
@@ -166,7 +166,7 @@
                         <div id="pdf-viewer" style="display: none; width: 100%; height: 100%;">
                             <iframe id="pdf-iframe" style="width: 100%; height: 500px; border: none; background: white; border-radius: 4px;"></iframe>
                             <div style="margin-top: 10px;">
-                                <button id="pdf-back-to-options" style="background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
+                                <button id="pdf-back-to-options" style="font-family: Arial, sans-serif; padding: 4px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px;">
                                     ← Back to Options
                                 </button>
                             </div>
@@ -190,6 +190,27 @@
                     document.body.style.overflow = '';
                 }
             });
+            
+            // Add hover/active effects to all buttons in the overlay
+            const addButtonEffects = (button) => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.background = '#e0e0e0';
+                    button.style.border = '2px outset #e0e0e0';
+                });
+                button.addEventListener('mouseleave', () => {
+                    button.style.background = '#f0f0f0';
+                    button.style.border = '2px outset #f0f0f0';
+                });
+                button.addEventListener('mousedown', () => {
+                    button.style.border = '2px inset #f0f0f0';
+                });
+                button.addEventListener('mouseup', () => {
+                    button.style.border = '2px outset #e0e0e0';
+                });
+            };
+            
+            // Apply effects to all buttons
+            overlay.querySelectorAll('button').forEach(addButtonEffects);
         };
 
         // Simple PDF loading function
@@ -210,12 +231,25 @@
             
             // Set up elements
             title.textContent = cleanUrl.split('/').pop();
-            openBrowser.href = cleanUrl;
-            download.href = cleanUrl;
             
             // Show options, hide viewer
             pdfOptions.style.display = 'block';
             pdfViewer.style.display = 'none';
+            
+            // Open in browser button
+            openBrowser.onclick = () => {
+                window.open(cleanUrl, '_blank', 'noopener');
+            };
+            
+            // Download button
+            download.onclick = () => {
+                const link = document.createElement('a');
+                link.href = cleanUrl;
+                link.download = cleanUrl.split('/').pop();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
             
             // Try embed button
             tryEmbed.onclick = () => {
