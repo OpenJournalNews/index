@@ -132,9 +132,13 @@
                      </div>
                   </div>
                   <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;border:0;background:#fff;" title="PDF Viewer"></iframe>
-                  <div id="pdf-fallback" style="display:none;padding:12px;font-size:14px;overflow:auto;">
-                     <p>Could not display the PDF inline. You can open it directly:</p>
-                     <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener">Open PDF</a></p>
+                  <div id="pdf-loading" style="display:none;padding:20px;text-align:center;font-size:14px;">
+                     <p>Loading PDF...</p>
+                  </div>
+                  <div id="pdf-fallback" style="display:none;padding:12px;font-size:14px;text-align:center;">
+                     <p>PDF viewer not available. You can:</p>
+                     <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener" style="color:#0066cc;text-decoration:underline;">Open PDF in new tab</a></p>
+                     <p style="margin-top:10px;font-size:12px;color:#666;">Some browsers block inline PDF viewing for security reasons.</p>
                   </div>
                </div>`;
             document.body.appendChild(overlay);
@@ -145,6 +149,71 @@
                 const iframe = overlay.querySelector('#pdf-iframe');
                 iframe.src = 'about:blank';
             });
+        };
+
+        // Enhanced PDF loading function with multiple fallback strategies
+        const loadPdfInOverlay = (pdfUrl) => {
+            const overlay = document.getElementById('pdf-overlay');
+            const iframe = overlay.querySelector('#pdf-iframe');
+            const fileNameSpan = overlay.querySelector('#pdf-filename');
+            const openTab = overlay.querySelector('#pdf-open-new-tab');
+            const fallbackLink = overlay.querySelector('#pdf-direct-link');
+            const fallbackDiv = overlay.querySelector('#pdf-fallback');
+            const loadingDiv = overlay.querySelector('#pdf-loading');
+            
+            // Reset states
+            fallbackDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            iframe.style.display = 'block';
+            
+            // Set up URLs and filename
+            const cleanUrl = pdfUrl.replace('http://', 'https://');
+            fileNameSpan.textContent = cleanUrl.split('/').pop();
+            openTab.href = cleanUrl;
+            fallbackLink.href = cleanUrl;
+            
+            // Show overlay
+            document.body.style.overflow = 'hidden';
+            overlay.style.display = 'block';
+            
+            // Try multiple PDF viewing approaches
+            let loadAttempts = 0;
+            const maxAttempts = 2;
+            
+            const tryLoadPdf = () => {
+                loadAttempts++;
+                
+                if (loadAttempts === 1) {
+                    // First attempt: Try direct PDF URL
+                    iframe.src = cleanUrl;
+                } else if (loadAttempts === 2) {
+                    // Second attempt: Try with PDF.js viewer (Mozilla's)
+                    iframe.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(cleanUrl)}`;
+                }
+                
+                // Set timeout to detect if PDF doesn't load
+                const loadTimeout = setTimeout(() => {
+                    if (loadAttempts < maxAttempts) {
+                        tryLoadPdf();
+                    } else {
+                        // All attempts failed, show fallback
+                        loadingDiv.style.display = 'none';
+                        iframe.style.display = 'none';
+                        fallbackDiv.style.display = 'block';
+                    }
+                }, 5000); // 5 second timeout
+                
+                // Listen for successful load
+                const onLoad = () => {
+                    clearTimeout(loadTimeout);
+                    loadingDiv.style.display = 'none';
+                    iframe.removeEventListener('load', onLoad);
+                };
+                
+                iframe.addEventListener('load', onLoad);
+            };
+            
+            tryLoadPdf();
         };
     </script>
     
@@ -351,27 +420,7 @@
                         e.preventDefault();
                         const pdfUrlRaw = pdfLink.getAttribute('href');
                         if (!pdfUrlRaw) return;
-                        // Force https (already normalized earlier) and encode
-                        let pdfUrl = pdfUrlRaw.replace('http://', 'https://');
-                        // Some browsers block direct PDF; try embedding
-                        const overlay = document.getElementById('pdf-overlay');
-                        const iframe = overlay.querySelector('#pdf-iframe');
-                        const fileNameSpan = overlay.querySelector('#pdf-filename');
-                        const openTab = overlay.querySelector('#pdf-open-new-tab');
-                        const fallbackLink = overlay.querySelector('#pdf-direct-link');
-                        const fallbackDiv = overlay.querySelector('#pdf-fallback');
-                        fallbackDiv.style.display = 'none';
-                        fileNameSpan.textContent = pdfUrl.split('/').pop();
-                        openTab.href = pdfUrl;
-                        fallbackLink.href = pdfUrl;
-                        document.body.style.overflow = 'hidden';
-                        overlay.style.display = 'block';
-                        // Attempt simple direct embed first
-                        iframe.onerror = () => {
-                            // Show fallback if load fails
-                            fallbackDiv.style.display = 'block';
-                        };
-                        iframe.src = pdfUrl;
+                        loadPdfInOverlay(pdfUrlRaw);
                     });
     
                     // Add event listener to like button
@@ -675,24 +724,7 @@
                         e.preventDefault();
                         const pdfUrlRaw = pdfLink.getAttribute('href');
                         if (!pdfUrlRaw) return;
-                        // Force https and use overlay
-                        let pdfUrl = pdfUrlRaw.replace('http://', 'https://');
-                        const overlay = document.getElementById('pdf-overlay');
-                        const iframe = overlay.querySelector('#pdf-iframe');
-                        const fileNameSpan = overlay.querySelector('#pdf-filename');
-                        const openTab = overlay.querySelector('#pdf-open-new-tab');
-                        const fallbackLink = overlay.querySelector('#pdf-direct-link');
-                        const fallbackDiv = overlay.querySelector('#pdf-fallback');
-                        fallbackDiv.style.display = 'none';
-                        fileNameSpan.textContent = pdfUrl.split('/').pop();
-                        openTab.href = pdfUrl;
-                        fallbackLink.href = pdfUrl;
-                        document.body.style.overflow = 'hidden';
-                        overlay.style.display = 'block';
-                        iframe.onerror = () => {
-                            fallbackDiv.style.display = 'block';
-                        };
-                        iframe.src = pdfUrl;
+                        loadPdfInOverlay(pdfUrlRaw);
                     });
                     }
                 });
