@@ -105,6 +105,49 @@
             document.getElementById('comments-button').style.display = 'none';
         }
     </script>
+    
+    <script>
+        // Global PDF overlay function for both Research and Hearts pages
+        const ensurePdfOverlay = () => {
+            if (document.getElementById('pdf-overlay')) return;
+            const overlay = document.createElement('div');
+            overlay.id = 'pdf-overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0,0,0,0.35)';
+            overlay.style.zIndex = '10000';
+            overlay.style.display = 'none';
+            overlay.style.padding = '12px';
+            overlay.style.boxSizing = 'border-box';
+            overlay.innerHTML = `
+               <div id="pdf-frame-wrapper" style="background:#fce5b1;position:relative;width:100%;height:100%;box-shadow:0 0 8px rgba(0,0,0,0.3);border:1px solid #bfa271;border-radius:4px;display:flex;flex-direction:column;">
+                  <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#d4bea0;border-bottom:1px solid #bfa271;">
+                     <span id="pdf-filename" style="font-size:12px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                     <div>
+                       <a id="pdf-open-new-tab" href="#" target="_blank" style="font-size:12px;margin-right:10px;">Open tab</a>
+                       <button id="pdf-close" style="font-size:14px;">Close</button>
+                     </div>
+                  </div>
+                  <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;border:0;background:#fff;" title="PDF Viewer"></iframe>
+                  <div id="pdf-fallback" style="display:none;padding:12px;font-size:14px;overflow:auto;">
+                     <p>Could not display the PDF inline. You can open it directly:</p>
+                     <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener">Open PDF</a></p>
+                  </div>
+               </div>`;
+            document.body.appendChild(overlay);
+            const closeBtn = overlay.querySelector('#pdf-close');
+            closeBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+                const iframe = overlay.querySelector('#pdf-iframe');
+                iframe.src = 'about:blank';
+            });
+        };
+    </script>
+    
     <button id="current-time"></button>
     <button id="about-button">About</button>
     <script>
@@ -295,12 +338,41 @@
                         <h2>${result.title}</h2>
                         <p><strong>Authors:</strong> ${result.authors.join(', ')}</p>
                         <p>${result.summary}</p>
-                        <p><a href="${result.pdf}" target="_blank" rel="noopener" class="pdf-link">PDF</a></p>
+                        <p><a href="${result.pdf}" rel="noopener" class="pdf-link">PDF</a></p>
                         <p><strong>Date:</strong> ${result.date}</p>
                         <button id="like-button-${paperId}" class="like-button" data-paper-id="${paperId}" data-title="${result.title}" data-authors="${result.authors.join(', ')}" data-summary="${result.summary}" data-pdf="${result.pdf}" data-date="${result.date}" data-liked="false">&#x2661;</button>
                         <span class="like-count" id="like-count-${paperId}">0</span>
                     `;
                     searchResults.appendChild(div);
+    
+                    // Add event listener to PDF link for inline viewing
+                    const pdfLink = div.querySelector('.pdf-link');
+                    pdfLink.addEventListener('click', e => {
+                        e.preventDefault();
+                        const pdfUrlRaw = pdfLink.getAttribute('href');
+                        if (!pdfUrlRaw) return;
+                        // Force https (already normalized earlier) and encode
+                        let pdfUrl = pdfUrlRaw.replace('http://', 'https://');
+                        // Some browsers block direct PDF; try embedding
+                        const overlay = document.getElementById('pdf-overlay');
+                        const iframe = overlay.querySelector('#pdf-iframe');
+                        const fileNameSpan = overlay.querySelector('#pdf-filename');
+                        const openTab = overlay.querySelector('#pdf-open-new-tab');
+                        const fallbackLink = overlay.querySelector('#pdf-direct-link');
+                        const fallbackDiv = overlay.querySelector('#pdf-fallback');
+                        fallbackDiv.style.display = 'none';
+                        fileNameSpan.textContent = pdfUrl.split('/').pop();
+                        openTab.href = pdfUrl;
+                        fallbackLink.href = pdfUrl;
+                        document.body.style.overflow = 'hidden';
+                        overlay.style.display = 'block';
+                        // Attempt simple direct embed first
+                        iframe.onerror = () => {
+                            // Show fallback if load fails
+                            fallbackDiv.style.display = 'block';
+                        };
+                        iframe.src = pdfUrl;
+                    });
     
                     // Add event listener to like button
                     const likeButton = div.querySelector('.like-button');
@@ -337,78 +409,8 @@
                     }
                 });
 
-                // Mobile PDF inline viewer overlay
-                const ensurePdfOverlay = () => {
-                    if (document.getElementById('pdf-overlay')) return;
-                    const overlay = document.createElement('div');
-                    overlay.id = 'pdf-overlay';
-                    overlay.style.position = 'fixed';
-                    overlay.style.top = '0';
-                    overlay.style.left = '0';
-                    overlay.style.width = '100%';
-                    overlay.style.height = '100%';
-                    overlay.style.background = 'rgba(0,0,0,0.35)';
-                    overlay.style.zIndex = '10000';
-                    overlay.style.display = 'none';
-                    overlay.style.padding = '12px';
-                    overlay.style.boxSizing = 'border-box';
-                    overlay.innerHTML = `
-                       <div id="pdf-frame-wrapper" style="background:#fce5b1;position:relative;width:100%;height:100%;box-shadow:0 0 8px rgba(0,0,0,0.3);border:1px solid #bfa271;border-radius:4px;display:flex;flex-direction:column;">
-                          <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#d4bea0;border-bottom:1px solid #bfa271;">
-                             <span id="pdf-filename" style="font-size:12px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                             <div>
-                               <a id="pdf-open-new-tab" href="#" target="_blank" style="font-size:12px;margin-right:10px;">Open tab</a>
-                               <button id="pdf-close" style="font-size:14px;">Close</button>
-                             </div>
-                          </div>
-                          <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;border:0;background:#fff;" title="PDF Viewer"></iframe>
-                          <div id="pdf-fallback" style="display:none;padding:12px;font-size:14px;overflow:auto;">
-                             <p>Could not display the PDF inline. You can open it directly:</p>
-                             <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener">Open PDF</a></p>
-                          </div>
-                       </div>`;
-                    document.body.appendChild(overlay);
-                    const closeBtn = overlay.querySelector('#pdf-close');
-                    closeBtn.addEventListener('click', () => {
-                        overlay.style.display = 'none';
-                        document.body.style.overflow = '';
-                        const iframe = overlay.querySelector('#pdf-iframe');
-                        iframe.src = 'about:blank';
-                    });
-                };
-
-                const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                if (isMobile) {
-                    ensurePdfOverlay();
-                    document.querySelectorAll('#searchResults a.pdf-link').forEach(a => {
-                        a.addEventListener('click', e => {
-                            e.preventDefault();
-                            const pdfUrlRaw = a.getAttribute('href');
-                            if (!pdfUrlRaw) return;
-                            // Force https (already normalized earlier) and encode
-                            let pdfUrl = pdfUrlRaw.replace('http://', 'https://');
-                            // Some browsers block direct PDF; try embedding
-                            const overlay = document.getElementById('pdf-overlay');
-                            const iframe = overlay.querySelector('#pdf-iframe');
-                            const fileNameSpan = overlay.querySelector('#pdf-filename');
-                            const openTab = overlay.querySelector('#pdf-open-new-tab');
-                            const fallbackLink = overlay.querySelector('#pdf-direct-link');
-                            const fallbackDiv = overlay.querySelector('#pdf-fallback');
-                            fallbackDiv.style.display = 'none';
-                            fileNameSpan.textContent = pdfUrl.split('/').pop();
-                            openTab.href = pdfUrl;
-                            fallbackLink.href = pdfUrl;
-                            document.body.style.overflow = 'hidden';
-                            overlay.style.display = 'block';
-                            // Attempt simple direct embed first
-                            iframe.onerror = () => {
-                                // Show fallback if load fails
-                                fallbackDiv.style.display = 'block';
-                            };
-                            iframe.src = pdfUrl;
-                        });
-                    });
-                }
+                // Enable PDF overlay viewer for all devices
+                ensurePdfOverlay();
             });
         });
     
@@ -517,6 +519,9 @@
     
         const openButton = document.getElementById('hearts-button');
         openButton.addEventListener('click', () => {
+            // Ensure PDF overlay is available for Hearts page
+            ensurePdfOverlay();
+            
             likedStoriesPage.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Disable main page scroll
             likedStoriesPage.innerHTML = ''; // Clear existing content to avoid duplication
@@ -658,11 +663,37 @@
                         <h4><a href="${paper.pdf}" style="user-select: none;">${paper.title}</a></h4>
                         <p style="color: black;">Authors: ${paper.authors}</p>
                         <p style="color: black;">${paper.summary}</p>
-                        <p><a href="${paper.pdf}" target="_blank">PDF</a></p>
+                        <p><a href="${paper.pdf}" class="pdf-link-hearts">PDF</a></p>
                         <p style="color: black;">Date: ${paper.date}</p>
                         <button onclick="removeLikedResearchPaper('${paperId}')">Remove</button>
                     `;
                     researchSection.appendChild(paperElement);
+                    
+                    // Add event listener to PDF link for inline viewing in Hearts page
+                    const pdfLink = paperElement.querySelector('.pdf-link-hearts');
+                    pdfLink.addEventListener('click', e => {
+                        e.preventDefault();
+                        const pdfUrlRaw = pdfLink.getAttribute('href');
+                        if (!pdfUrlRaw) return;
+                        // Force https and use overlay
+                        let pdfUrl = pdfUrlRaw.replace('http://', 'https://');
+                        const overlay = document.getElementById('pdf-overlay');
+                        const iframe = overlay.querySelector('#pdf-iframe');
+                        const fileNameSpan = overlay.querySelector('#pdf-filename');
+                        const openTab = overlay.querySelector('#pdf-open-new-tab');
+                        const fallbackLink = overlay.querySelector('#pdf-direct-link');
+                        const fallbackDiv = overlay.querySelector('#pdf-fallback');
+                        fallbackDiv.style.display = 'none';
+                        fileNameSpan.textContent = pdfUrl.split('/').pop();
+                        openTab.href = pdfUrl;
+                        fallbackLink.href = pdfUrl;
+                        document.body.style.overflow = 'hidden';
+                        overlay.style.display = 'block';
+                        iframe.onerror = () => {
+                            fallbackDiv.style.display = 'block';
+                        };
+                        iframe.src = pdfUrl;
+                    });
                     }
                 });
             }
