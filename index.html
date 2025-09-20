@@ -124,18 +124,26 @@
             overlay.style.boxSizing = 'border-box';
             overlay.innerHTML = `
                <div id="pdf-frame-wrapper" style="background:#fce5b1;position:relative;width:100%;height:100%;box-shadow:0 0 8px rgba(0,0,0,0.3);border:1px solid #bfa271;border-radius:4px;display:flex;flex-direction:column;">
-                  <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#d4bea0;border-bottom:1px solid #bfa271;">
-                     <span id="pdf-filename" style="font-size:12px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                     <div>
-                       <a id="pdf-open-new-tab" href="#" target="_blank" style="font-size:12px;margin-right:10px;">Open tab</a>
-                       <button id="pdf-close" style="font-size:14px;">Close</button>
+                  <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#d4bea0;border-bottom:1px solid #bfa271;">
+                     <span id="pdf-filename" style="font-size:14px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:bold;"></span>
+                     <div style="display:flex;gap:8px;">
+                       <a id="pdf-open-new-tab" href="#" target="_blank" 
+                          style="font-size:12px;padding:6px 10px;background:#0066cc;color:white;text-decoration:none;border-radius:3px;display:inline-block;">
+                          📱 Open
+                       </a>
+                       <button id="pdf-close" 
+                               style="font-size:12px;padding:6px 10px;background:#dc3545;color:white;border:none;border-radius:3px;cursor:pointer;">
+                         ✕ Close
+                       </button>
                      </div>
                   </div>
                   <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;border:0;background:#fff;" title="PDF Viewer"></iframe>
-                  <div id="pdf-loading" style="display:none;padding:20px;text-align:center;font-size:14px;">
+                  <div id="pdf-loading" style="display:none;padding:30px;text-align:center;font-size:16px;background:#f8f9fa;">
+                     <div style="margin-bottom:15px;">📄</div>
                      <p>Loading PDF...</p>
+                     <div style="font-size:12px;color:#666;margin-top:10px;">This may take a moment</div>
                   </div>
-                  <div id="pdf-fallback" style="display:none;padding:12px;font-size:14px;text-align:center;">
+                  <div id="pdf-fallback" style="display:none;padding:20px;font-size:14px;text-align:center;background:#f8f9fa;">
                      <p>PDF viewer not available. You can:</p>
                      <p><a id="pdf-direct-link" href="#" target="_blank" rel="noopener" style="color:#0066cc;text-decoration:underline;">Open PDF in new tab</a></p>
                      <p style="margin-top:10px;font-size:12px;color:#666;">Some browsers block inline PDF viewing for security reasons.</p>
@@ -149,9 +157,25 @@
                 const iframe = overlay.querySelector('#pdf-iframe');
                 iframe.src = 'about:blank';
             });
+            
+            // Add touch/click outside to close on mobile
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                    const iframe = overlay.querySelector('#pdf-iframe');
+                    iframe.src = 'about:blank';
+                }
+            });
+            
+            // Prevent closing when clicking inside the PDF wrapper
+            const pdfWrapper = overlay.querySelector('#pdf-frame-wrapper');
+            pdfWrapper.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
         };
 
-        // Enhanced PDF loading function with multiple fallback strategies
+        // Enhanced PDF loading function with Android-specific fallbacks
         const loadPdfInOverlay = (pdfUrl) => {
             const overlay = document.getElementById('pdf-overlay');
             const iframe = overlay.querySelector('#pdf-iframe');
@@ -176,9 +200,51 @@
             document.body.style.overflow = 'hidden';
             overlay.style.display = 'block';
             
-            // Try multiple PDF viewing approaches
+            // Detect Android and mobile browsers
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isWebView = window.navigator.userAgent.includes('wv') || window.navigator.userAgent.includes('Version') && window.navigator.userAgent.includes('Chrome');
+            
+            // For Android/mobile, use different strategy
+            if (isAndroid || isMobile) {
+                // Android browsers often block iframe PDF embedding entirely
+                // Show improved fallback immediately with multiple options
+                loadingDiv.style.display = 'none';
+                iframe.style.display = 'none';
+                
+                // Update fallback content for mobile
+                fallbackDiv.innerHTML = `
+                    <p style="margin-bottom:15px;"><strong>PDF Viewer</strong></p>
+                    <p style="margin-bottom:15px;">Mobile browsers often restrict inline PDF viewing. Choose an option:</p>
+                    <div style="margin-bottom:15px;">
+                        <a href="${cleanUrl}" target="_blank" rel="noopener" 
+                           style="display:inline-block;background:#0066cc;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
+                           📱 Open in Browser
+                        </a>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <a href="${cleanUrl}" download 
+                           style="display:inline-block;background:#28a745;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
+                           💾 Download PDF
+                        </a>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <a href="https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(cleanUrl)}" target="_blank" 
+                           style="display:inline-block;background:#ea4335;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
+                           📄 Google Viewer
+                        </a>
+                    </div>
+                    <p style="font-size:12px;color:#666;margin-top:15px;">
+                        Tip: For best results on mobile, use "Open in Browser" or download the PDF.
+                    </p>
+                `;
+                fallbackDiv.style.display = 'block';
+                return;
+            }
+            
+            // For desktop browsers, try the original multi-attempt approach
             let loadAttempts = 0;
-            const maxAttempts = 2;
+            const maxAttempts = 3;
             
             const tryLoadPdf = () => {
                 loadAttempts++;
@@ -189,6 +255,9 @@
                 } else if (loadAttempts === 2) {
                     // Second attempt: Try with PDF.js viewer (Mozilla's)
                     iframe.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(cleanUrl)}`;
+                } else if (loadAttempts === 3) {
+                    // Third attempt: Try Google Docs viewer
+                    iframe.src = `https://docs.google.com/gview?url=${encodeURIComponent(cleanUrl)}&embedded=true`;
                 }
                 
                 // Set timeout to detect if PDF doesn't load
@@ -199,9 +268,21 @@
                         // All attempts failed, show fallback
                         loadingDiv.style.display = 'none';
                         iframe.style.display = 'none';
+                        fallbackDiv.innerHTML = `
+                            <p style="margin-bottom:15px;">Unable to display PDF inline.</p>
+                            <div style="margin-bottom:15px;">
+                                <a href="${cleanUrl}" target="_blank" rel="noopener"
+                                   style="display:inline-block;background:#0066cc;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin:5px;">
+                                   🔗 Open PDF in New Tab
+                                </a>
+                            </div>
+                            <p style="font-size:12px;color:#666;">
+                                Your browser may have restrictions on displaying external PDFs.
+                            </p>
+                        `;
                         fallbackDiv.style.display = 'block';
                     }
-                }, 5000); // 5 second timeout
+                }, 4000); // 4 second timeout
                 
                 // Listen for successful load
                 const onLoad = () => {
