@@ -119,57 +119,29 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0,0,0,0.8);
+                background: rgba(0,0,0,0.85);
                 z-index: 10000;
                 display: none;
-                padding: 20px;
+                padding: 0;
                 box-sizing: border-box;
             `;
-            
+
             overlay.innerHTML = `
-                <div style="background: #fce5b1; border-radius: 8px; width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden;">
-                    <div style="padding: 15px; background: #d4bea0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #bfa271;">
-                        <span id="pdf-title" style="font-weight: bold; font-size: 16px;"></span>
-                        <button id="pdf-close-btn" style="font-family: Arial, sans-serif; padding: 4px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px;">✕ Close</button>
-                    </div>
-                    <div id="pdf-content" style="flex: 1; padding: 20px; text-align: center; overflow: auto;">
-                        <div id="pdf-options">
-                            <h3 style="margin-bottom: 20px;">PDF Viewer Options</h3>
-                            <p style="margin-bottom: 20px; color: #666;">Choose how you'd like to view this PDF:</p>
-                            
-                            <div style="margin-bottom: 15px;">
-                                <button id="pdf-open-browser" 
-                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
-                                   🌐 Open in New Tab
-                                </button>
-                            </div>
-                            
-                            <div style="margin-bottom: 15px;">
-                                <button id="pdf-download" 
-                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
-                                   💾 Download PDF
-                                </button>
-                            </div>
-                            
-                            <div style="margin-bottom: 15px;">
-                                <button id="pdf-try-embed" 
-                                        style="font-family: Arial, sans-serif; padding: 12px 20px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px; min-width: 200px; margin: 5px;">
-                                   📄 Try Inline Viewer
-                                </button>
-                            </div>
-                            
-                            <p style="font-size: 14px; color: #666; margin-top: 20px;">
-                                Note: Some browsers may block inline PDF viewing for security reasons.
-                            </p>
+                <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:#fce5b1;overflow:hidden;">
+                    <div style="flex:0 0 56px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#d4bea0;border-bottom:1px solid #bfa271;">
+                        <span id="pdf-title" style="font-weight:600;font-size:15px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;"></span>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <a id="pdf-open-browser" href="#" target="_blank" style="font-size:14px;color:inherit;text-decoration:none;padding:6px;">Open in tab</a>
+                            <button id="pdf-close-btn" style="font-family: Arial, sans-serif; padding:6px 8px; border:2px outset #f0f0f0; background:#f0f0f0; cursor:pointer; font-size:14px;">Close</button>
                         </div>
-                        
-                        <div id="pdf-viewer" style="display: none; width: 100%; height: 100%;">
-                            <iframe id="pdf-iframe" style="width: 100%; height: 500px; border: none; background: white; border-radius: 4px;"></iframe>
-                            <div style="margin-top: 10px;">
-                                <button id="pdf-back-to-options" style="font-family: Arial, sans-serif; padding: 4px; border: 2px outset #f0f0f0; background: #f0f0f0; color: #000000; cursor: pointer; font-size: 16px;">
-                                    ← Back to Options
-                                </button>
-                            </div>
+                    </div>
+                    <div id="pdf-content" style="flex:1 1 auto;display:flex;flex-direction:column;">
+                        <div id="pdf-viewer" style="flex:1 1 auto;display:flex;">
+                            <iframe id="pdf-iframe" style="flex:1 1 auto;width:100%;height:100%;border:0;background:#fff;display:block;" title="PDF Viewer"></iframe>
+                        </div>
+                        <div id="pdf-fallback" style="display:none;padding:12px;background:#fce5b1;">
+                            <p style="margin:0 0 8px 0;color:#333;">Could not display the PDF inline. You can open it directly:</p>
+                            <p style="margin:0;"><a id="pdf-direct-link" href="#" target="_blank" rel="noopener">Open PDF</a></p>
                         </div>
                     </div>
                 </div>
