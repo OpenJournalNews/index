@@ -185,61 +185,85 @@
             overlay.querySelectorAll('button').forEach(addButtonEffects);
         };
 
-        // Simple PDF loading function
+        // Simple PDF loading function (safe and matches overlay structure)
         const openPdfViewer = (pdfUrl) => {
             ensurePdfOverlay();
             const overlay = document.getElementById('pdf-overlay');
+            if (!overlay) return;
+
             const title = overlay.querySelector('#pdf-title');
             const openBrowser = overlay.querySelector('#pdf-open-browser');
-            const download = overlay.querySelector('#pdf-download');
-            const tryEmbed = overlay.querySelector('#pdf-try-embed');
-            const pdfOptions = overlay.querySelector('#pdf-options');
-            const pdfViewer = overlay.querySelector('#pdf-viewer');
             const iframe = overlay.querySelector('#pdf-iframe');
-            const backBtn = overlay.querySelector('#pdf-back-to-options');
-            
-            // Clean up URL
-            const cleanUrl = pdfUrl.replace('http://', 'https://');
-            
-            // Set up elements
-            title.textContent = cleanUrl.split('/').pop();
-            
-            // Show options, hide viewer
-            pdfOptions.style.display = 'block';
-            pdfViewer.style.display = 'none';
-            
-            // Open in browser button
-            openBrowser.onclick = () => {
-                window.open(cleanUrl, '_blank', 'noopener');
-            };
-            
-            // Download button
-            download.onclick = () => {
-                const link = document.createElement('a');
-                link.href = cleanUrl;
-                link.download = cleanUrl.split('/').pop();
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            };
-            
-            // Try embed button
-            tryEmbed.onclick = () => {
-                pdfOptions.style.display = 'none';
-                pdfViewer.style.display = 'block';
-                iframe.src = cleanUrl;
-            };
-            
-            // Back to options button
-            backBtn.onclick = () => {
-                pdfViewer.style.display = 'none';
-                pdfOptions.style.display = 'block';
-                iframe.src = 'about:blank';
-            };
-            
+            const pdfViewer = overlay.querySelector('#pdf-viewer');
+            const pdfFallback = overlay.querySelector('#pdf-fallback');
+            const pdfDirectLink = overlay.querySelector('#pdf-direct-link');
+
+            // Defensive: make sure elements exist
+            if (!iframe || !pdfViewer || !pdfFallback) {
+                // As a last resort, open in new tab
+                window.open(pdfUrl, '_blank', 'noopener');
+                return;
+            }
+
+            // Normalize URL to https when possible
+            const cleanUrl = (pdfUrl || '').replace(/^http:\/\//i, 'https://');
+
+            // Set title and links
+            try {
+                title.textContent = cleanUrl.split('/').pop() || cleanUrl;
+            } catch (e) {
+                title.textContent = cleanUrl;
+            }
+            if (openBrowser) openBrowser.setAttribute('href', cleanUrl);
+            if (pdfDirectLink) {
+                pdfDirectLink.setAttribute('href', cleanUrl);
+                pdfDirectLink.setAttribute('rel', 'noopener');
+            }
+
+            // Show the viewer and attempt to embed
+            pdfFallback.style.display = 'none';
+            pdfViewer.style.display = 'block';
+            iframe.src = cleanUrl;
+
+            // If embedding is blocked (e.g. X-Frame-Options), fall back after a short timeout
+            const fallbackTimer = setTimeout(() => {
+                let embedBlocked = false;
+                try {
+                    // Accessing contentDocument may throw for cross-origin or be empty if blocked
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    // If we can read the document and it looks empty, consider fallback
+                    if (doc && doc.body && doc.body.children.length === 0) {
+                        embedBlocked = true;
+                    }
+                } catch (err) {
+                    // Cross-origin access — assume embedding probably worked. Do not treat as blocked.
+                    embedBlocked = false;
+                }
+
+                if (embedBlocked) {
+                    iframe.src = 'about:blank';
+                    pdfViewer.style.display = 'none';
+                    pdfFallback.style.display = 'block';
+                }
+            }, 1600);
+
             // Show overlay
             document.body.style.overflow = 'hidden';
             overlay.style.display = 'block';
+
+            // When overlay closes, clear iframe and timer
+            const closeBtn = overlay.querySelector('#pdf-close-btn');
+            const cleanup = () => {
+                try { iframe.src = 'about:blank'; } catch (e) {}
+                clearTimeout(fallbackTimer);
+                document.body.style.overflow = '';
+                overlay.style.display = 'none';
+            };
+
+            if (closeBtn) {
+                // ensure close button already has listener from ensurePdfOverlay, but also guard here
+                closeBtn.onclick = cleanup;
+            }
         };
     </script>
     </script>
